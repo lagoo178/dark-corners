@@ -7,62 +7,55 @@ class Zombie extends Entity {
 
   constructor(scene, x, y, textureKey, target, speed, health) {
     super(scene, x, y, textureKey);
+    this.health = 3; // initialized as 3 (for now) 
     this.scene = scene;
-    //zombie health
-    this.zombieData = {}
-    if (textureKey === "test-zombie(3)") {
-      this.zombieData.health = health ? health: 3;
-    }
     
 
     // set target to player
     this.target = target;
     this.speed = speed; // px per second
     
-    //// Walk animation
-    //const animFrameRate = 10;
-    //const anims = scene.anims;
-    //const spriteKey = this.textureKey; 
-//
-    //anims.create({
-    //  key: spriteKey + '-left',
-    //  frames: anims.generateFrameNumbers(spriteKey, { start: 5, end: 3 }),
-    //  frameRate: animFrameRate,
-    //  repeat: -1,
-    //  yoyo: true,
-    //});
-    //
-    //anims.create({
-    //  key: spriteKey + '-right',
-    //  frames: anims.generateFrameNumbers(spriteKey, { start: 8, end: 6 }),
-    //  frameRate: animFrameRate,
-    //  repeat: -1,
-    //  yoyo: true,
-    //});
-    //
-    //anims.create({
-    //  key: spriteKey + '-up',
-    //  frames: anims.generateFrameNumbers(spriteKey, { start: 9, end: 11 }),
-    //  frameRate: animFrameRate,
-    //  repeat: -1,
-    //  yoyo: true,
-    //});
-    //
-    //anims.create({
-    //  key: spriteKey + '-down',
-    //  frames: anims.generateFrameNumbers(spriteKey, { start: 0, end: 2 }),
-    //  frameRate: animFrameRate,
-    //  repeat: -1,
-    //  yoyo: true, 
-    //});
-//
-    //this.idleFrame = {
-    //  down: 1, 
-    //  left: 4, 
-    //  right: 7, 
-    //  up: 10
-    //}
-//
+    const anims = scene.anims;
+
+    // zombie animation
+
+    anims.create({ 
+        key: 'zombie-idle', 
+        frames: anims.generateFrameNames('zombie', { 
+            prefix: 'skeleton-idle_',
+            suffix: '.png', 
+            start:1,
+            end: 16,
+            zeropad: 2 
+        }),
+        frameRate: 15, 
+        repeat: -1 
+    });
+    anims.create({ 
+        key: 'zombie-move', 
+        frames: this.anims.generateFrameNames('zombie', { 
+            prefix: 'skeleton-move_',
+            suffix: '.png', 
+            start:1,
+            end: 16,
+            zeropad: 2 
+        }), 
+        frameRate: 15, 
+        repeat: -1 
+    });
+    this.anims.create({ 
+        key: 'zombie-attack', 
+        frames: this.anims.generateFrameNames('zombie', { 
+            prefix: 'skeleton-attack_',
+            suffix: '.png', 
+            start:1,
+            end: 8,
+            zeropad: 2 
+        }), 
+        frameRate: 15, 
+        repeat: -1 
+    });
+    this.anims.play('zombie-idle');
     //this.setFrame(this.idleFrame.down);
     
   } //// end constructor
