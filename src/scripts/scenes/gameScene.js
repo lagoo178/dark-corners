@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Bullet from '../objects/bullets';
+import Player from '../sprite/Player';
 import Inventory from './Inventory.js'
 
 
@@ -148,8 +149,8 @@ export default class gameScene extends Phaser.Scene {
 
         // Set image/sprite properties
         //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
-        player.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true);
-        enemy.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true);
+        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
         reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
 
         // Set hud properties
