@@ -1,23 +1,23 @@
 import Physics  from "phaser";
-import Entity  from ".objects/Entity";
+import Entity  from "../objects/Entity";
   
   /* --------------------------------- Player Class ----------------------------------- */
-  
-let playerHit = 0;
 
-class Player extends Entity {
+export default class Player extends Entity {
   
 
-  constructor(scene, x, y, textureKey, inventory, health, sampleLocations, kills) {
+  constructor(scene, x, y, textureKey) {
     super(scene, x, y, textureKey);
     this.health = 3; // initialized as 3 (for now) 
     this.kills = 0;
     this.scene = scene;
+
+    const anims = scene.anims;
  
     // player animation (handgun)
-    this.anims.create({ 
+    anims.create({ 
         key: 'handgun-idle', 
-        frames: this.anims.generateFrameNames('player', { 
+        frames: anims.generateFrameNames('player', { 
             prefix: 'handgun/idle/',
             suffix: '.png', 
             start:1,
@@ -27,9 +27,9 @@ class Player extends Entity {
         frameRate: 15, 
         repeat: -1 
     });
-    this.anims.create({ 
+    anims.create({ 
         key: 'handgun-move', 
-        frames: this.anims.generateFrameNames('player', { 
+        frames: anims.generateFrameNames('player', { 
             prefix: 'handgun/move/',
             suffix: '.png', 
             start:1,
@@ -39,9 +39,9 @@ class Player extends Entity {
         frameRate: 15, 
         repeat: -1 
     });
-    this.anims.create({ 
+    anims.create({ 
         key: 'handgun-shoot', 
-        frames: this.anims.generateFrameNames('player', { 
+        frames: anims.generateFrameNames('player', { 
             prefix: 'handgun/shoot/',
             suffix: '.png', 
             start:1,
@@ -52,20 +52,10 @@ class Player extends Entity {
         repeat: -1 
     });
 
-    player.play('handgun-idle');
-
-    this.idleFrame = {
-      down: 1, 
-      left: 4, 
-      right: 7, 
-      up: 10
-    }
-
-    this.setFrame(this.idleFrame.down);
+    this.anims.play('handgun-idle');
 
     /////////// Keyboard Inputs 
-    //keys = this.input.keyboard.createCursorKeys();
-    const {LEFT, RIGHT, UP, DOWN, W, A, S, D, SPACE} = Phaser.Input.Keyboard.KeyCodes;
+    const {LEFT, RIGHT, UP, DOWN, W, A, S, D} = Phaser.Input.Keyboard.KeyCodes;
 
     this.keys = scene.input.keyboard.addKeys({
       left: LEFT, 
@@ -75,8 +65,7 @@ class Player extends Entity {
       w: W, 
       a: A, 
       s: S, 
-      d: D,
-      fireKey: SPACE
+      d: D
     });
     
     
@@ -89,40 +78,32 @@ class Player extends Entity {
 
   update() {
 
-    if (this.gameData.health <= 0) {
+    if (this.health <= 0) {
       this.isDead = true;
     }
 
     const { keys } = this; 
-    const walkingSpeed = 200; // velocity is in px / second
+    const walkingSpeed = 600; // velocity is in px / second
     const prevVelocity = this.body.velocity.clone();
     
-    if (playerHit > 0){
-      playerHit++;
-      if (playerHit >  5){
-        playerHit = 0;
-      }
-    } else {
-      this.body.setVelocity(0);
-    }
 
     ////// Set velocity // reset Y and X to zero for orthogonal movements to prevent diagonal movement
     if (keys.left.isDown || keys.a.isDown) {
       this.body.setVelocityY(0);
       this.body.setVelocityX(-walkingSpeed);
-      this.anims.play('left', true);
+      this.anims.play('handgun-move', true);
     } else if (keys.right.isDown || keys.d.isDown) {
       this.body.setVelocityY(0);
       this.body.setVelocityX(walkingSpeed);
-      this.anims.play('right', true);
+      this.anims.play('handgun-move', true);
     } else if (keys.up.isDown || keys.w.isDown) {
       this.body.setVelocityX(0);
       this.body.setVelocityY(-walkingSpeed);
-      this.anims.play('up', true);
+      this.anims.play('handgun-move', true);
     } else if (keys.down.isDown || keys.s.isDown) {
       this.body.setVelocityX(0);
       this.body.setVelocityY(walkingSpeed);
-      this.anims.play('down', true);
+      this.anims.play('handgun-move', true);
     } else {
       this.anims.stop();
     }
@@ -134,13 +115,13 @@ class Player extends Entity {
     if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
       // show idle animation frame
       if (prevVelocity.x < 0) {
-        this.setFrame(this.idleFrame.left);
+        this.anims.play('handgun-idle', true);
       } else if (prevVelocity.x > 0) {
-        this.setFrame(this.idleFrame.right);
+        this.anims.play('handgun-idle', true);
       } else if (prevVelocity.y < 0) {
-        this.setFrame(this.idleFrame.up);
+        this.anims.play('handgun-idle', true);
       } else if (prevVelocity.y > 0) {
-        this.setFrame(this.idleFrame.down)
+        this.anims.play('handgun-idle', true);
       }
     }
 
