@@ -31,7 +31,7 @@ export default class gameScene extends Phaser.Scene {
         //    { frameWidth: 66, frameHeight: 60 });
         this.load.atlas('player', 'assets/player.png', 'assets/player.json');
         this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');        
-        this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');
+        //this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('target', 'assets/crosshair.png');
         this.load.image('lives', 'assets/heart.png');
@@ -424,7 +424,6 @@ export default class gameScene extends Phaser.Scene {
 
     getTileID = function(x,y){
         var tile = this.map.getTileAt(x, y);
-        return
         //return tile.index;
     }
 
