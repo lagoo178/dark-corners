@@ -53,11 +53,197 @@ export default class gameScene extends Phaser.Scene {
         const tileset = this.map.addTilesetImage("battle-royale", "tiles");
         const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
         //const herbeLayer = this.map.createStaticLayer("herbe", tileset, 0, 0);
-        const block = this.map.createStaticLayer("block", tileset, 0, 0);
+        this.block = this.map.createStaticLayer("block", tileset, 0, 0);
         //this.map["wallLayer"] = this.map.createStaticLayer("wall", tileset, 0, 0);
 
-        block.setCollisionByExclusion([-1]);
+        this.block.setCollisionByExclusion([-1]);
 
+        
+
+        player = this.physics.add.sprite(800, 300, 'player');
+        enemy = this.physics.add.sprite(300, 600, 'zombie');
+        
+        reticle = this.physics.add.sprite(800, 700, 'target');
+
+        // Set Hud location
+        hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
+        hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
+        hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
+        scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+
+        // Set image/sprite properties
+        //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
+        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
+
+        // Set hud properties
+        hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        scoreText.setOrigin(0.5, 0.5);
+
+        // Set sprite variables
+        player.health = 3;
+        enemy.health = 3;
+        enemy.lastFired = 0;
+
+        this.scene.launch('InventoryScene', {gameScene:this});
+
+        // We create the 2D array representing all the tiles of our map
+        var grid = [];
+        for(var y = 0; y < this.map.height; y++){
+            var col = [];
+            for(var x = 0; x < this.map.width; x++){
+                // In each cell we store the ID of the tile, which corresponds
+                // to its index in the tileset of the map ("ID" field in Tiled)
+                col.push(this.getTileID(x,y));
+            }
+            grid.push(col);
+        }
+
+        var tile = this.map.tilesets[0];
+        var properties = tile.tileProperties;
+        var acceptableTiles = [];
+
+        // We need to list all the tile IDs that can be walked on. Let's iterate over all of them
+        // and see what properties have been entered in Tiled.
+        for(var i = tile.firstgid-1; i < tileset.total; i++){ // firstgid and total are fields from Tiled that indicate the range of IDs that the tiles can take in that tileset
+            if(!properties.hasOwnProperty(i)) {
+                // If there is no property indicated at all, it means it's a walkable tile
+                acceptableTiles.push(i+1);
+                continue;
+            }
+            if(!properties[i].collide) acceptableTiles.push(i+1);
+            //if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
+        }
+
+        this.createAnims();
+        this.camera();
+        this.InputManager();
+        this.interactionManager();
+    }
+
+    interactionManager() 
+    {
+        // Set world bounds
+        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
+
+        // Set Collider
+        this.physics.add.collider(player, this.block);
+        this.physics.add.collider(enemy, this.block);
+        this.physics.add.collider(enemy, enemy);
+        //this.physics.add.collider(playerBullets, this.block);
+        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
+    }
+
+
+    InputManager()
+    {
+        // Creates object for input with WASD kets
+        moveKeys = this.input.keyboard.addKeys({
+            'up': Phaser.Input.Keyboard.KeyCodes.W,
+            'down': Phaser.Input.Keyboard.KeyCodes.S,
+            'left': Phaser.Input.Keyboard.KeyCodes.A,
+            'right': Phaser.Input.Keyboard.KeyCodes.D
+        });
+
+        // Enables movement of player with WASD keys
+        this.input.keyboard.on('keydown-W', function (event) {
+            player.setAccelerationY(-800);
+            console.log('W key pressed');
+            player.play('handgun-move');
+        });
+        this.input.keyboard.on('keydown-S', function (event) {
+            player.setAccelerationY(800);
+            console.log('S key pressed');
+            player.play('handgun-move');
+        });
+        this.input.keyboard.on('keydown-A', function (event) {
+            player.setAccelerationX(-800);
+            console.log('A key pressed');
+            player.play('handgun-move');
+        });
+        this.input.keyboard.on('keydown-D', function (event) {
+            player.setAccelerationX(800);
+            console.log('D key pressed');
+            player.play('handgun-move');
+        });
+
+        // Stops player acceleration on uppress of WASD keys
+        this.input.keyboard.on('keyup-W', function (event) {
+            if (moveKeys['down'].isUp)
+                player.setAccelerationY(0);
+        });
+        this.input.keyboard.on('keyup-S', function (event) {
+            if (moveKeys['up'].isUp)
+                player.setAccelerationY(0);
+        });
+        this.input.keyboard.on('keyup-A', function (event) {
+            if (moveKeys['right'].isUp)
+                player.setAccelerationX(0);
+        });
+        this.input.keyboard.on('keyup-D', function (event) {
+            if (moveKeys['left'].isUp)
+                player.setAccelerationX(0);
+        });
+
+        // Fires bullet from player on left click of mouse
+        this.input.on('pointerdown', function (pointer, time, lastFired) {
+            if (player.active === false)
+                return;
+
+            // Get bullet from bullets group
+            var bullet = playerBullets.get().setActive(true).setVisible(true);
+
+            if (bullet)
+            {
+                bullet.fire(player, reticle);
+                this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
+               // this.physics.add.collider(bullet, this.block);
+            }
+
+
+
+        }, this);
+
+        // Pointer lock will only work after mousedown
+        //this.canvas.addEventListener('mousedown', function () {
+        //    this.input.mouse.requestPointerLock();
+        //});
+
+        this.input.on('pointerdown', function (pointer) {
+            this.input.mouse.requestPointerLock();
+        }, this);
+
+        this.input.mouse.requestPointerLock();
+        // Exit pointer lock when Q or escape (by default) is pressed.
+        this.input.keyboard.on('keydown-Q', function (event) {
+            if (this.input.mouse.locked)
+                this.input.mouse.releasePointerLock();
+        }, 0, this);
+
+        // Move reticle upon locked pointer move
+        this.input.on('pointermove', function (pointer) {
+            if (this.input.mouse.locked)
+            {
+                reticle.x += pointer.movementX;
+                reticle.y += pointer.movementY;
+            }
+        }, this);
+    }
+
+    camera()
+    {
+        // Set camera properties
+        //this.cameras.main.zoom = 0.5;
+        this.cameras.main.startFollow(player);
+        this.cameras.main.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+    }
+
+    createAnims()
+    {
         // Animation
 
         // player animation (handgun)
@@ -136,171 +322,8 @@ export default class gameScene extends Phaser.Scene {
             frameRate: 15, 
             repeat: -1 
         });
-
-        player = this.physics.add.sprite(800, 300, 'player').play('handgun-idle');
-        enemy = this.physics.add.sprite(300, 600, 'zombie').play('zombie-idle');
-        reticle = this.physics.add.sprite(800, 700, 'target');
-
-        // Set Hud location
-        hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
-        hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
-        hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
-        scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
-
-        // Set image/sprite properties
-        //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
-        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
-
-        // Set hud properties
-        hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        scoreText.setOrigin(0.5, 0.5);
-
-        // Set sprite variables
-        player.health = 3;
-        enemy.health = 3;
-        enemy.lastFired = 0;
-
-        // Set camera properties
-        //this.cameras.main.zoom = 0.5;
-        this.cameras.main.startFollow(player);
-        this.cameras.main.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
-        
-        // Set world bounds
-        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
-        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
-
-        // Set Collider
-        this.physics.add.collider(player, block);
-        this.physics.add.collider(enemy, block);
-        this.physics.add.collider(enemy, enemy);
-        //this.physics.add.collider(playerBullets, block);
-        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
-
-        // Creates object for input with WASD kets
-        moveKeys = this.input.keyboard.addKeys({
-            'up': Phaser.Input.Keyboard.KeyCodes.W,
-            'down': Phaser.Input.Keyboard.KeyCodes.S,
-            'left': Phaser.Input.Keyboard.KeyCodes.A,
-            'right': Phaser.Input.Keyboard.KeyCodes.D
-        });
-
-        // Enables movement of player with WASD keys
-        this.input.keyboard.on('keydown-W', function (event) {
-            player.setAccelerationY(-800);
-            console.log('W key pressed');
-            player.play('handgun-move');
-        });
-        this.input.keyboard.on('keydown-S', function (event) {
-            player.setAccelerationY(800);
-            console.log('S key pressed');
-            player.play('handgun-move');
-        });
-        this.input.keyboard.on('keydown-A', function (event) {
-            player.setAccelerationX(-800);
-            console.log('A key pressed');
-            player.play('handgun-move');
-        });
-        this.input.keyboard.on('keydown-D', function (event) {
-            player.setAccelerationX(800);
-            console.log('D key pressed');
-            player.play('handgun-move');
-        });
-
-        // Stops player acceleration on uppress of WASD keys
-        this.input.keyboard.on('keyup-W', function (event) {
-            if (moveKeys['down'].isUp)
-                player.setAccelerationY(0);
-        });
-        this.input.keyboard.on('keyup-S', function (event) {
-            if (moveKeys['up'].isUp)
-                player.setAccelerationY(0);
-        });
-        this.input.keyboard.on('keyup-A', function (event) {
-            if (moveKeys['right'].isUp)
-                player.setAccelerationX(0);
-        });
-        this.input.keyboard.on('keyup-D', function (event) {
-            if (moveKeys['left'].isUp)
-                player.setAccelerationX(0);
-        });
-
-        // Fires bullet from player on left click of mouse
-        this.input.on('pointerdown', function (pointer, time, lastFired) {
-            if (player.active === false)
-                return;
-
-            // Get bullet from bullets group
-            var bullet = playerBullets.get().setActive(true).setVisible(true);
-
-            if (bullet)
-            {
-                bullet.fire(player, reticle);
-                this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
-               // this.physics.add.collider(bullet, block);
-            }
-
-
-
-        }, this);
-
-        // Pointer lock will only work after mousedown
-        //this.canvas.addEventListener('mousedown', function () {
-        //    this.input.mouse.requestPointerLock();
-        //});
-
-        this.input.on('pointerdown', function (pointer) {
-            this.input.mouse.requestPointerLock();
-        }, this);
-
-        this.input.mouse.requestPointerLock();
-        // Exit pointer lock when Q or escape (by default) is pressed.
-        this.input.keyboard.on('keydown-Q', function (event) {
-            if (this.input.mouse.locked)
-                this.input.mouse.releasePointerLock();
-        }, 0, this);
-
-        // Move reticle upon locked pointer move
-        this.input.on('pointermove', function (pointer) {
-            if (this.input.mouse.locked)
-            {
-                reticle.x += pointer.movementX;
-                reticle.y += pointer.movementY;
-            }
-        }, this);
-
-        this.scene.launch('InventoryScene', {gameScene:this});
-
-        // We create the 2D array representing all the tiles of our map
-        var grid = [];
-        for(var y = 0; y < this.map.height; y++){
-            var col = [];
-            for(var x = 0; x < this.map.width; x++){
-                // In each cell we store the ID of the tile, which corresponds
-                // to its index in the tileset of the map ("ID" field in Tiled)
-                col.push(this.getTileID(x,y));
-            }
-            grid.push(col);
-        }
-
-        var tile = this.map.tilesets[0];
-        var properties = tile.tileProperties;
-        var acceptableTiles = [];
-
-        // We need to list all the tile IDs that can be walked on. Let's iterate over all of them
-        // and see what properties have been entered in Tiled.
-        for(var i = tile.firstgid-1; i < tileset.total; i++){ // firstgid and total are fields from Tiled that indicate the range of IDs that the tiles can take in that tileset
-            if(!properties.hasOwnProperty(i)) {
-                // If there is no property indicated at all, it means it's a walkable tile
-                acceptableTiles.push(i+1);
-                continue;
-            }
-            if(!properties[i].collide) acceptableTiles.push(i+1);
-            //if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
-        }
+        player.play('handgun-idle');
+        enemy.play('zombie-idle');
     }
 
     enemyHitCallback(enemyHit, bulletHit)
@@ -373,7 +396,7 @@ export default class gameScene extends Phaser.Scene {
                 bullet.fire(enemy, player);
                 // Add collider between bullet and player
                 gameObject.physics.add.collider(player, bullet, playerHitCallback);
-                //this.physics.add.collider(bullet, block);
+                //this.physics.add.collider(bullet, this.block);
             }
         }
     }

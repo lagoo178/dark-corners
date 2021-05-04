@@ -35,7 +35,7 @@ export default class MainScene extends Phaser.Scene {
 
     button2.on('pointerdown', function () {
 
-        //this.scene.start('MainMenu');
+        this.scene.start('GameOver');
 
     }, this);
 
