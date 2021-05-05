@@ -1,18 +1,45 @@
 import Phaser from 'phaser';
+import { getScores } from '../helpers/api';
 
 export default class statsScene extends Phaser.Scene {
     constructor() {
         super({ key: 'StatsScene' })
     }
     preload() {
-        this.load.image('backgroundc', 'assets/menu/stats.png');
         this.load.image('buttonbackb', 'assets/menu/back.png');
     }
     create() {
         //emitter = new Phaser.Events.EventEmitter();
         //controller = new Controller();
-        var bg = this.add.sprite(0,0,'backgroundc');
-        bg.setOrigin(0,0);
+        this.add.text(400, 100, 'LeaderBoard', {
+          color: 'black',
+          fontSize: '32px ',
+        }).setOrigin(0.5, 0.5);
+
+        this.loading = this.add.text(400, 150, 'Loading...', {
+          color: 'black',
+          fontSize: '16px ',
+        }).setOrigin(0.5, 0.5);
+
+        getScores().then((scores) => {
+          //this.enterDisplay();
+          const scoreStyle = {
+            color: 'black',
+            fontSize: '38px ',
+          };
+          const { result } = scores;
+          const resultsCount = 5;
+          result.sort((x, y) => y.score - x.score);
+          result.slice(0, resultsCount).forEach((topscore, index) => {
+            if (topscore) {
+              this.add.text(60, 200 + (40 * index),
+                `${index + 1}. Name: ${topscore.user} -- Score: ${topscore.score}`,
+                scoreStyle);
+            }
+          });
+        });
+
+        //this.endKeys = this.input.keyboard.addKeys('enter');
 
     
         var buttonz = this.add.image(700,520, 'buttonbackb').setInteractive();
@@ -25,5 +52,9 @@ export default class statsScene extends Phaser.Scene {
     }
     update() {
         
+    }
+    enterDisplay() {
+        this.loading.destroy();
+        this.add.image(400, 500, 'enter').setScale(3);
     }
 }

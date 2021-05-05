@@ -1,5 +1,21 @@
 const Url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api';
-const gameId = 'CDnCLHDcJCsfrdRyzYcI';
+const gameId = 'WtKT7KZX1bi9BCfM1277';
+
+export const getID = async () => {
+  const response = await fetch(`${Url}/games/`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      Accept: 'Application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: 'Dark-Corners'}),
+  });
+  if (response.ok) {
+    return response.json();
+  }
+  throw new Error('Getting ID was unsuccessful!');
+};
 
 export const postScore = async (name, score) => {
   const response = await fetch(`${Url}/games/${gameId}/scores`, {
