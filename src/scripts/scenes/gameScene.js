@@ -47,81 +47,51 @@ export default class gameScene extends Phaser.Scene {
         // Add 2 groups for Bullet objects
         playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
         enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
-
-        // Add background player, enemy, reticle, healthpoint sprites
-        //const background = this.add.image(800, 600, 'background');
-
-        // buat masukin tilemap yang dibuat dari tilemap editor (tiled)
-        this.map = this.make.tilemap({ key: 'map' });
-
-        // buat masukkin gambar tilesetnya yang dipake di tilemap
-        const tileset = this.map.addTilesetImage("battle-royale", "tiles");
-
-        // layer buat floor/lantai, buat player sama zombienya jalan
-        const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
-
-        // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
-        this.block = this.map.createStaticLayer("block", tileset, 0, 0);
-
-        this.block.setCollisionByExclusion([-1]);
-
+        this.createMap();
         
-
+        
         player = this.physics.add.sprite(800, 300, 'player');
-        enemy = this.physics.add.sprite(300, 600, 'zombie');
-        
+        enemy = this.physics.add.sprite(300, 600, 'zombie'); 
         reticle = this.physics.add.sprite(800, 700, 'target');
-
-        
-
         // Set image/sprite properties
         //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
         player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
         enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
-
-        
-
+        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);      
         // Set sprite variables
         player.health = 3;
         enemy.health = 3;
         enemy.lastFired = 0;
-
-        this.scene.launch('InventoryScene', {gameScene:this});
-
-        // We create the 2D array representing all the tiles of our map
-        var grid = [];
-        for(var y = 0; y < this.map.height; y++){
-            var col = [];
-            for(var x = 0; x < this.map.width; x++){
-                // In each cell we store the ID of the tile, which corresponds
-                // to its index in the tileset of the map ("ID" field in Tiled)
-                col.push(this.getTileID(x,y));
-            }
-            grid.push(col);
-        }
-
-        var tile = this.map.tilesets[0];
-        var properties = tile.tileProperties;
-        var acceptableTiles = [];
-
-        // We need to list all the tile IDs that can be walked on. Let's iterate over all of them
-        // and see what properties have been entered in Tiled.
-        for(var i = tile.firstgid-1; i < tileset.total; i++){ // firstgid and total are fields from Tiled that indicate the range of IDs that the tiles can take in that tileset
-            if(!properties.hasOwnProperty(i)) {
-                // If there is no property indicated at all, it means it's a walkable tile
-                acceptableTiles.push(i+1);
-                continue;
-            }
-            if(!properties[i].collide) acceptableTiles.push(i+1);
-            //if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
-        }
-
         this.createAnims();
         this.camera();
         this.InputManager();
         this.interactionManager();
         this.createHud();
+        this.scene.launch('InventoryScene', {gameScene:this});
+
+        
+    }
+
+    createMap() 
+    {
+        // Add background player, enemy, reticle, healthpoint sprites
+        //const background = this.add.image(800, 600, 'background');
+
+        // buat masukin tilemap yang dibuat dari tilemap editor (tiled)
+        this.map = this.make.tilemap({ key: 'map' });
+        // buat masukkin gambar tilesetnya yang dipake di tilemap
+        const tileset = this.map.addTilesetImage("battle-royale", "tiles");
+        // layer buat floor/lantai, buat player sama zombienya jalan
+        const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
+        // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
+        this.block = this.map.createStaticLayer("block", tileset, 0, 0);
+        
+        this.block.setCollisionByExclusion([-1]);
+
+        //this.physics.world.bounds.width = this.map.widthInPixels;
+        //this.physics.world.bounds.height = this.map.heightInPixels;
+        // Set world bounds
+        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
     }
 
     createHud() 
@@ -141,8 +111,7 @@ export default class gameScene extends Phaser.Scene {
 
     interactionManager() 
     {
-        // Set world bounds
-        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+        
         //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
 
         // Set Collider
