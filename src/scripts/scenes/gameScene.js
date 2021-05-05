@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Bullet from '../objects/bullets';
 import Player from '../sprite/Player';
+import Zombie from '../sprite/Zombie';
 import Inventory from './Inventory.js'
 
 

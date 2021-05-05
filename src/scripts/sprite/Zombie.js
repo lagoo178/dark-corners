@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export default class Enemies extends Phaser.Physics.Arcade.Sprite {
+export default class Zombie extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, verticalMove) {
     super(scene, x * 16, y * 16, 'zombie');
     scene.sys.updateList.add(this);
