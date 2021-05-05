@@ -72,11 +72,7 @@ export default class gameScene extends Phaser.Scene {
         
         reticle = this.physics.add.sprite(800, 700, 'target');
 
-        // Set Hud location
-        hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
-        hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
-        hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
-        scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+        
 
         // Set image/sprite properties
         //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
@@ -84,11 +80,7 @@ export default class gameScene extends Phaser.Scene {
         enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
         reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
 
-        // Set hud properties
-        hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        scoreText.setOrigin(0.5, 0.5);
+        
 
         // Set sprite variables
         player.health = 3;
@@ -129,6 +121,22 @@ export default class gameScene extends Phaser.Scene {
         this.camera();
         this.InputManager();
         this.interactionManager();
+        this.createHud();
+    }
+
+    createHud() 
+    {
+        // Set Hud location
+        hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
+        hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
+        hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
+        scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+
+        // Set hud properties
+        hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+        scoreText.setOrigin(0.5, 0.5);
     }
 
     interactionManager() 
