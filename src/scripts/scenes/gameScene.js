@@ -85,13 +85,11 @@ export default class gameScene extends Phaser.Scene {
         const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
         // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
         this.block = this.map.createStaticLayer("block", tileset, 0, 0);
-        
         this.block.setCollisionByExclusion([-1]);
-
-        //this.physics.world.bounds.width = this.map.widthInPixels;
-        //this.physics.world.bounds.height = this.map.heightInPixels;
-        // Set world bounds
-        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+        //Set world bounds
+        this.physics.world.bounds.width = this.map.widthInPixels;
+        this.physics.world.bounds.height = this.map.heightInPixels;
+        //this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
     }
 
     createHud() 
