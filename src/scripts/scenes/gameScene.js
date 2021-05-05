@@ -49,12 +49,18 @@ export default class gameScene extends Phaser.Scene {
 
         // Add background player, enemy, reticle, healthpoint sprites
         //const background = this.add.image(800, 600, 'background');
+
+        // buat masukin tilemap yang dibuat dari tilemap editor (tiled)
         this.map = this.make.tilemap({ key: 'map' });
+
+        // buat masukkin gambar tilesetnya yang dipake di tilemap
         const tileset = this.map.addTilesetImage("battle-royale", "tiles");
+
+        // layer buat floor/lantai, buat player sama zombienya jalan
         const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
-        //const herbeLayer = this.map.createStaticLayer("herbe", tileset, 0, 0);
+
+        // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
         this.block = this.map.createStaticLayer("block", tileset, 0, 0);
-        //this.map["wallLayer"] = this.map.createStaticLayer("wall", tileset, 0, 0);
 
         this.block.setCollisionByExclusion([-1]);
 
