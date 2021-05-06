@@ -49,12 +49,13 @@ export default class gameScene extends Phaser.Scene {
         
         player = this.physics.add.sprite(800, 300, 'player');
         enemy = this.physics.add.sprite(300, 600, 'zombie'); 
-        reticle = this.physics.add.sprite(800, 700, 'target');
+        this.createCrosshair();
+        //reticle = this.physics.add.sprite(800, 700, 'target');
         // Set image/sprite properties
         //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
         player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
         enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);      
+        //reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);      
         // Set sprite variables
         player.health = 3;
         enemy.health = 3;
@@ -96,13 +97,24 @@ export default class gameScene extends Phaser.Scene {
         hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
         hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
         hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
-        scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+        //scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+        const fontConfig = {
+          fontFamily: 'monospace',
+          fontSize: 50,
+          fontStyle: 'bold',
+          color: '#FFFFFF',
+          align: 'center',
+        };
+
+        this.killDisplay = this.add.text(650, 8, 'KILLS:', fontConfig).setScrollFactor(0);
+        this.timeDisplay = this.add.text(950, 8, 'TIME:', fontConfig).setScrollFactor(0);
+        this.scoreDisplay = this.add.text(350, 8, 'SCORE:', fontConfig).setScrollFactor(0);
 
         // Set hud properties
         hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
         hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
         hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-        scoreText.setOrigin(0.5, 0.5);
+        //scoreText.setOrigin(0.5, 0.5);
     }
     createCrosshair()
     {
@@ -239,6 +251,13 @@ export default class gameScene extends Phaser.Scene {
         playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
         enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
     }
+    createZombies() {
+        zombieArray.forEach((enemy) => {
+          const zombie = new Enemy(this, enemy.x / 16, enemy.y / 16, false);
+          zombie.setSize(60, 60);
+          this.enemiesGroup.add(zombie).setDepth(1);
+        });
+    } 
 
     createAnims()
     {
@@ -350,11 +369,25 @@ export default class gameScene extends Phaser.Scene {
         player.alpha = 0.5;
         player.playerModel.health -= 1;
         this.updateHealthDisplay();
-        this.audioHurt.play();
+        //this.audioHurt.play();
 
         if (player.playerModel.health < 1) {
           this.player.playerModel.scoreCalc -= 200;
-          this.gameOver();
+          //this.gameOver();
+        }
+    }
+    updateHealthDisplay() {
+        switch (this.player.playerModel.health) {
+          case 2:
+            hp3.destroy();
+            break;
+          case 1:
+            hp2.destroy();
+            break;
+          case 0:
+            hp1.destroy();
+            break;
+          default:
         }
     }
 
