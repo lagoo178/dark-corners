@@ -44,9 +44,6 @@ export default class gameScene extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 32 });
     }
     create() {
-        // Add 2 groups for Bullet objects
-        playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
-        enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
         this.createMap();
         
         
@@ -63,12 +60,13 @@ export default class gameScene extends Phaser.Scene {
         enemy.health = 3;
         enemy.lastFired = 0;
         this.createAnims();
+        this.createGroups();
         this.camera();
         this.InputManager();
         this.interactionManager();
         this.createHud();
         this.scene.launch('InventoryScene', {gameScene:this});
-
+        this.startTime = this.time.now;
         
     }
 
@@ -105,6 +103,11 @@ export default class gameScene extends Phaser.Scene {
         hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
         hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
         scoreText.setOrigin(0.5, 0.5);
+    }
+    createCrosshair()
+    {
+        reticle = this.physics.add.sprite(800, 700, 'target');
+        reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);
     }
 
     interactionManager() 
@@ -221,7 +224,20 @@ export default class gameScene extends Phaser.Scene {
         // Set camera properties
         //this.cameras.main.zoom = 0.5;
         this.cameras.main.startFollow(player);
-        this.cameras.main.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+        this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    }
+
+    createPlayer() {
+        this.player = new Player(this, 800, 300, 'player');
+        this.player.setDisplaySize(60, 60);
+        this.add.existing(this.player);
+    }
+
+    createGroups() {
+        this.enemiesGroup = this.add.group();
+        // Add 2 groups for Bullet objects
+        playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
+        enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
     }
 
     createAnims()
@@ -306,6 +322,46 @@ export default class gameScene extends Phaser.Scene {
         });
         player.play('handgun-idle');
         enemy.play('zombie-idle');
+    }
+
+    scoreManager(time) 
+    {
+        const timeCount = Math.round(((time - this.startTime) / 1000) - 5);
+        this.player.playerModel.scoreCalc = (this.player.playerModel.health * 200
+          + this.player.playerModel.kills * 100
+          - this.player.playerModel.shots * 10 - timeCount * 2);
+        this.timeDisplay.setText(`TIME: ${timeCount}`);
+        this.scoreDisplay.setText(`SCORE: ${this.player.playerModel.scoreCalc}`);
+    }
+
+    hurtPlayer(player) 
+    {
+        if (player.playerModel.hurtFlag) {
+          return;
+        }
+
+        player.playerModel.hurtFlag = true;
+        this.time.addEvent({
+          delay: 2000,
+          callback: this.resetHurtTime,
+          callbackScope: this,
+        });
+
+        player.alpha = 0.5;
+        player.playerModel.health -= 1;
+        this.updateHealthDisplay();
+        this.audioHurt.play();
+
+        if (player.playerModel.health < 1) {
+          this.player.playerModel.scoreCalc -= 200;
+          this.gameOver();
+        }
+    }
+
+    resetHurtTime() 
+    {
+        this.player.playerModel.hurtFlag = false;
+        this.player.alpha = 1;
     }
 
     enemyHitCallback(enemyHit, bulletHit)
