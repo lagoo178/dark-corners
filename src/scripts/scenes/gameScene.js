@@ -246,12 +246,20 @@ export default class gameScene extends Phaser.Scene {
     }
 
     createGroups() {
-        this.enemiesGroup = this.add.group();
+        //this.enemiesGroup = this.add.group();
         // Add 2 groups for Bullet objects
         playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
         enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
     }
     createZombies() {
+        this.enemies = this.add.group({
+            maxSize: 5,
+            runChildUpdate: true
+        });
+
+        for (let i = 0; i < 5; i++) {
+            this.enemies.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
+        }
         zombieArray.forEach((enemy) => {
           const zombie = new Enemy(this, enemy.x / 16, enemy.y / 16, false);
           zombie.setSize(60, 60);
