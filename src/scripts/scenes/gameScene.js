@@ -45,26 +45,16 @@ export default class gameScene extends Phaser.Scene {
     }
     create() {
         this.createMap();
-        
-        
-        player = this.physics.add.sprite(800, 300, 'player');
+        this.createPlayer();      
         enemy = this.physics.add.sprite(300, 600, 'zombie'); 
-        this.createCrosshair();
-        //reticle = this.physics.add.sprite(800, 700, 'target');
-        // Set image/sprite properties
-        //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
-        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        this.createCrosshair();      
         enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        //reticle.setOrigin(0.5, 0.5).setDisplaySize(50, 50).setCollideWorldBounds(true);      
-        // Set sprite variables
-        player.health = 3;
         enemy.health = 3;
         enemy.lastFired = 0;
         this.createAnims();
         this.createGroups();
         this.camera();
         this.InputManager();
-        this.interactionManager();
         this.createHud();
         this.scene.launch('InventoryScene', {gameScene:this});
         this.startTime = this.time.now;
@@ -106,9 +96,10 @@ export default class gameScene extends Phaser.Scene {
           align: 'center',
         };
 
-        this.killDisplay = this.add.text(650, 8, 'KILLS:', fontConfig).setScrollFactor(0);
-        this.timeDisplay = this.add.text(950, 8, 'TIME:', fontConfig).setScrollFactor(0);
-        this.scoreDisplay = this.add.text(350, 8, 'SCORE:', fontConfig).setScrollFactor(0);
+        this.killDisplay = this.add.text(1000, 8, 'KILLS:', fontConfig).setScrollFactor(0);
+        this.timeDisplay = this.add.text(500, 8, 'TIME:', fontConfig).setScrollFactor(0);
+        this.levelDisplay = this.add.text(750, 8, 'LEVEL:', fontConfig).setScrollFactor(0);
+        this.scoreDisplay = this.add.text(200, 8, 'SCORE:', fontConfig).setScrollFactor(0);
 
         // Set hud properties
         hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
@@ -131,6 +122,8 @@ export default class gameScene extends Phaser.Scene {
         this.physics.add.collider(player, this.block);
         this.physics.add.collider(enemy, this.block);
         this.physics.add.collider(enemy, enemy);
+        this.physics.overlap(player, enemy, this.hurtPlayer, null, this);
+        this.physics.overlap(enemy, playerBullets, this.shotImpact, null, this);
         //this.physics.add.collider(playerBullets, this.block);
         //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
     }
@@ -192,12 +185,12 @@ export default class gameScene extends Phaser.Scene {
                 return;
 
             // Get bullet from bullets group
-            var bullet = playerBullets.get().setActive(true).setVisible(true);
+            const bullet = playerBullets.get().setActive(true).setVisible(true);
 
             if (bullet)
             {
                 bullet.fire(player, reticle);
-                this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
+                //this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
                // this.physics.add.collider(bullet, this.block);
             }
 
@@ -240,9 +233,17 @@ export default class gameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.player = new Player(this, 800, 300, 'player');
-        this.player.setDisplaySize(60, 60);
-        this.add.existing(this.player);
+        player = this.physics.add.sprite(800, 300, 'player');
+        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        player.health = 3;
+        player.score = 0;
+        player.hurtFlag = false;
+        player.kills = 0;
+        player.shots = 0;
+        player.scoreCalc = 0;
+        //this.player = new Player(this, 800, 300, 'player');
+        //this.player.setDisplaySize(60, 60);
+        //this.add.existing(this.player);
     }
 
     createGroups() {
@@ -252,19 +253,15 @@ export default class gameScene extends Phaser.Scene {
         enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
     }
     createZombies() {
-        this.enemies = this.add.group({
+        this.enemy = this.add.group({
             maxSize: 5,
             runChildUpdate: true
         });
 
         for (let i = 0; i < 5; i++) {
-            this.enemies.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
-        }
-        zombieArray.forEach((enemy) => {
-          const zombie = new Enemy(this, enemy.x / 16, enemy.y / 16, false);
-          zombie.setSize(60, 60);
-          this.enemiesGroup.add(zombie).setDepth(1);
-        });
+            this.enemy.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
+        };
+        this.enemy.setSize(60, 60);
     } 
 
     createAnims()
@@ -353,21 +350,20 @@ export default class gameScene extends Phaser.Scene {
 
     scoreManager(time) 
     {
-        const timeCount = Math.round(((time - this.startTime) / 1000) - 5);
-        this.player.playerModel.scoreCalc = (this.player.playerModel.health * 200
-          + this.player.playerModel.kills * 100
-          - this.player.playerModel.shots * 10 - timeCount * 2);
-        this.timeDisplay.setText(`TIME: ${timeCount}`);
-        this.scoreDisplay.setText(`SCORE: ${this.player.playerModel.scoreCalc}`);
+        //const timeCount = Math.round(((time - this.startTime) / 1000) - 5);
+        player.scoreCalc = (player.health * 200
+          + player.kills * 100);
+        this.timeDisplay.setText(`TIME:${timeCount}`);
+        this.scoreDisplay.setText(`SCORE:${player.scoreCalc}`);
     }
 
     hurtPlayer(player) 
     {
-        if (player.playerModel.hurtFlag) {
+        if (player.hurtFlag) {
           return;
         }
 
-        player.playerModel.hurtFlag = true;
+        player.hurtFlag = true;
         this.time.addEvent({
           delay: 2000,
           callback: this.resetHurtTime,
@@ -375,17 +371,18 @@ export default class gameScene extends Phaser.Scene {
         });
 
         player.alpha = 0.5;
-        player.playerModel.health -= 1;
+        player.health -= 1;
         this.updateHealthDisplay();
-        //this.audioHurt.play();
+        //play audio here
 
-        if (player.playerModel.health < 1) {
-          this.player.playerModel.scoreCalc -= 200;
+        if (player.health < 1) {
+          player.scoreCalc -= 200;
           //this.gameOver();
         }
     }
-    updateHealthDisplay() {
-        switch (this.player.playerModel.health) {
+    updateHealthDisplay() 
+    {
+        switch (player.health) {
           case 2:
             hp3.destroy();
             break;
@@ -401,83 +398,26 @@ export default class gameScene extends Phaser.Scene {
 
     resetHurtTime() 
     {
-        this.player.playerModel.hurtFlag = false;
-        this.player.alpha = 1;
+        player.hurtFlag = false;
+        player.alpha = 1;
     }
 
-    enemyHitCallback(enemyHit, bulletHit)
+    shotImpact(enemy, bullet) 
     {
-        // Reduce health of enemy
-        if (bulletHit.active === true && enemyHit.active === true)
+        
+        enemy.health = enemy.health - 1;
+        console.log("Enemy hp: ", enemy.health);
+
+        // Kill enemy if health <= 0
+        if (enemy.health <= 0)
         {
-            score += 10;
-            scoreText.setText('Score: ' + score);
-            enemyHit.health = enemyHit.health - 1;
-            console.log("Enemy hp: ", enemyHit.health);
-
-            // Kill enemy if health <= 0
-            if (enemyHit.health <= 0)
-            {
-               enemyHit.setActive(false).setVisible(false);
-            }
-
-            // Destroy bullet
-            bulletHit.setActive(false).setVisible(false);
+            enemy.destroy();
+            player.kills += 1;
+            // enemy death audio play
+            this.killDisplay.setText(`KILLS:${player.kills}`);
         }
-    }
-
-    playerHitCallback(playerHit, bulletHit)
-    {
-        // Reduce health of player
-        if (bulletHit.active === true && playerHit.active === true)
-        {
-            playerHit.health = playerHit.health - 1;
-            console.log("Player hp: ", playerHit.health);
-
-            // Kill hp sprites and kill player if health <= 0
-            if (playerHit.health == 2)
-            {
-                hp3.destroy();
-            }
-            else if (playerHit.health == 1)
-            {
-                hp2.destroy();
-            }
-            else
-            {
-                hp1.destroy();
-                playerHit.setActive(false).setVisible(false);
-                // Game over state should execute here
-            }
-
-            // Destroy bullet
-            bulletHit.setActive(false).setVisible(false);
-        }
-    }
-
-
-    enemyFire(enemy, player, time, gameObject)
-    {
-        if (enemy.active === false)
-        {
-            return;
-        }
-
-        if ((time - enemy.lastFired) > 1000)
-        {
-            enemy.lastFired = time;
-
-            // Get bullet from bullets group
-            var bullet = enemyBullets.get().setActive(true).setVisible(true);
-
-            if (bullet)
-            {
-                bullet.fire(enemy, player);
-                // Add collider between bullet and player
-                gameObject.physics.add.collider(player, bullet, playerHitCallback);
-                //this.physics.add.collider(bullet, this.block);
-            }
-        }
+        bullet.destroy();
+        
     }
 
     // Ensures sprite speed doesnt exceed maxVelocity while update is called
@@ -540,6 +480,9 @@ export default class gameScene extends Phaser.Scene {
         reticle.body.velocity.x = player.body.velocity.x;
         reticle.body.velocity.y = player.body.velocity.y;
 
+        this.scoreManager(time);
+        this.interactionManager();
+
         // Constrain velocity of player
         this.constrainVelocity(player, 500);
 
@@ -549,7 +492,7 @@ export default class gameScene extends Phaser.Scene {
         // Make enemy fire
         //enemyFire(enemy, player, time, this);
 
-        this.physics.moveToObject(enemy, player, 240);
+        //this.physics.moveToObject(enemy, player, 240);
     }
 
     
