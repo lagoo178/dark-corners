@@ -18,6 +18,7 @@ var moveKeys = null;
 var playerBullets = null;
 var enemyBullets = null;
 var inventory = null;
+var timedEvent;
 
 export default class gameScene extends Phaser.Scene {
     constructor() {
@@ -50,15 +51,16 @@ export default class gameScene extends Phaser.Scene {
         this.createCrosshair();      
         enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
         enemy.health = 3;
-        enemy.lastFired = 0;
         this.createAnims();
         this.createGroups();
         this.camera();
         this.InputManager();
         this.createHud();
         this.scene.launch('InventoryScene', {gameScene:this});
-        this.startTime = this.time.now;
-        
+        this.initialTime = 120;
+
+        // Each 1000 ms call onEvent
+        timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
     }
 
     createMap() 
@@ -349,14 +351,33 @@ export default class gameScene extends Phaser.Scene {
     }
 
     scoreManager(time) 
-    {
-        //const timeCount = Math.round(((time - this.startTime) / 1000) - 5);
+    {   
+        const timer = this.time.addEvent({
+            delay: 10000,
+            paused: false
+        });
         player.scoreCalc = (player.health * 200
           + player.kills * 100);
-        this.timeDisplay.setText(`TIME:${timeCount}`);
         this.scoreDisplay.setText(`SCORE:${player.scoreCalc}`);
     }
 
+    formatTime(seconds){
+        // Minutes
+        var minutes = Math.floor(seconds/60);
+        // Seconds
+        var partInSeconds = seconds%60;
+        // Adds left zeros to seconds
+        partInSeconds = partInSeconds.toString().padStart(2,'0');
+        // Returns formated time
+        return `${minutes}:${partInSeconds}`;
+    }
+
+
+    onEvent ()
+    {
+        this.initialTime -= 1; // One second
+        this.timeDisplay.setText(`TIME:` + this.formatTime(this.initialTime));
+    }
     hurtPlayer(player) 
     {
         if (player.hurtFlag) {
