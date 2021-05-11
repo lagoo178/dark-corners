@@ -82,11 +82,10 @@ This is what you get after installing this template. A simple and clean starter 
 To clone and run this template, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
-# Clone this repository
-$ git clone --depth 1 https://github.com/yandeu/phaser-project-template-es6.git phaser3-game
+
 
 # Go into the repository
-$ cd phaser3-game
+$ cd dark-corners
 
 # Install dependencies
 $ npm install
