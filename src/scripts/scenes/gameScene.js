@@ -352,10 +352,6 @@ export default class gameScene extends Phaser.Scene {
 
     scoreManager(time) 
     {   
-        const timer = this.time.addEvent({
-            delay: 10000,
-            paused: false
-        });
         player.scoreCalc = (player.health * 200
           + player.kills * 100);
         this.scoreDisplay.setText(`SCORE:${player.scoreCalc}`);
