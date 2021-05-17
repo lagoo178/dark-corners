@@ -31,7 +31,6 @@ export default class Pathfinder {
     const targetNode = this.getNodeFromXY(pointB.x, pointB.y);
     const deadNodes = [];
     const liveNodes = [startNode];
-    
     while (liveNodes.length) {
       let currentNode = liveNodes[0];
 
@@ -46,12 +45,13 @@ export default class Pathfinder {
       liveNodes.splice(liveNodes.findIndex((node) => node === currentNode), 1);
       deadNodes.push(currentNode);
 
+      
       if (currentNode === targetNode) {
         return this.tracePath(startNode, targetNode);
       }
 
       this.getNeighbours(currentNode).forEach((neighbour) => {
-        if (neighbour.isWalkable && !deadNodes.includes(neighbour)) {
+        if (neighbour.isWalkable == 1 && !deadNodes.includes(neighbour)) {
           const cost = currentNode.gCost + this.getDistance(currentNode, neighbour);
 
           if (cost < neighbour.gCost || !liveNodes.includes(neighbour)) {
