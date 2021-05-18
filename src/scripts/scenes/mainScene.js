@@ -8,24 +8,28 @@ export default class MainScene extends Phaser.Scene {
     super({ key: 'MainScene' })
   }
   preload() {
-    this.load.image('background', 'assets/menu/mainbg.png');
-    this.load.image('buttonBG', 'assets/menu/buttona.png');
-    this.load.image('buttonBH', 'assets/menu/buttonb.png');
-    this.load.image('buttonBI', 'assets/menu/buttonc.png');
-    this.load.image('buttonBJ', 'assets/menu/buttond.png');
-    this.load.image('buttonBK', 'assets/menu/sound.png');
+    this.load.image('background', 'assets/menu/bgnew.png');
+    this.load.image('tittle', 'assets/menu/darkcorners1.png');
+    this.load.image('buttonBG', 'assets/menu/button1.png');
+    this.load.image('buttonBH', 'assets/menu/button2.png');
+    this.load.image('buttonBI', 'assets/menu/button3.png');
+    this.load.image('buttonBJ', 'assets/menu/button4.png');
+    this.load.image('buttonBL', 'assets/menu/button5.png');
+    this.load.image('buttonBK', 'assets/menu/buttonon.png');
   }
   create() {
     var bg = this.add.sprite(0,0,'background');
     bg.setOrigin(0,0);
 
-    var title = this.add.text(260,80, 'Welcome to Dark-Corners!', {fontFamily:'Anton'}, {fontSize:'40px'});
-    var titlemenu = this.add.text(310,130, 'MAIN MENU', {fontFamily:'Anton'}, {fontSize:'500px'});
-    var button1 = this.add.image(350,180, 'buttonBG').setInteractive();
-    var button2 = this.add.image(350,240, 'buttonBH').setInteractive();
-    var button3 = this.add.image(350,300, 'buttonBI').setInteractive();
-    var button4 = this.add.image(350,360, 'buttonBJ').setInteractive();
-    var button5 = this.add.image(700,520, 'buttonBK').setInteractive();
+    var tittle1 = this.add.image(620,70, 'tittle');
+    //var titlemenu = this.add.text(600,130, 'MAIN MENU', {fontFamily:'Anton'}, {fontSize:'1200px'});
+    var button1 = this.add.image(650,190, 'buttonBG').setInteractive();
+    var button2 = this.add.image(650,260, 'buttonBH').setInteractive();
+    var button3 = this.add.image(650,330, 'buttonBI').setInteractive();
+    var button4 = this.add.image(650,400, 'buttonBJ').setInteractive();
+    var button5 = this.add.image(900,650, 'buttonBK').setInteractive();
+    var button6 = this.add.image(650,470, 'buttonBL').setInteractive();
+
 
     button1.on('pointerdown', function () {
 

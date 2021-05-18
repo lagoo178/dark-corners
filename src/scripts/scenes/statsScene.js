@@ -6,7 +6,7 @@ export default class statsScene extends Phaser.Scene {
         super({ key: 'StatsScene' })
     }
     preload() {
-        this.load.image('buttonbackb', 'assets/menu/back.png');
+        this.load.image('buttonbackb', 'assets/menu/buttonback.png');
     }
     create() {
         //emitter = new Phaser.Events.EventEmitter();
@@ -42,7 +42,7 @@ export default class statsScene extends Phaser.Scene {
         //this.endKeys = this.input.keyboard.addKeys('enter');
 
     
-        var buttonz = this.add.image(700,520, 'buttonbackb').setInteractive();
+        var buttonz = this.add.image(1050,680, 'buttonbackb').setInteractive();
 
         buttonz.on('pointerdown', function () {
 

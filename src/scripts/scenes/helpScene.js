@@ -8,8 +8,8 @@ export default class helpScene extends Phaser.Scene {
     super({ key: 'HelpScene' })
   }
   preload() {
-    this.load.image('backgroundd', 'assets/menu/help.png');
-    this.load.image('buttonbackc', 'assets/menu/back.png');
+    this.load.image('backgroundd', 'assets/menu/help1.png');
+    this.load.image('buttonbackc', 'assets/menu/buttonback.png');
   }
   create() {
     //emitter = new Phaser.Events.EventEmitter();
@@ -18,7 +18,7 @@ export default class helpScene extends Phaser.Scene {
         bg.setOrigin(0,0);
 
     
-        var buttonm = this.add.image(700,520, 'buttonbackc').setInteractive();
+        var buttonm = this.add.image(1050,680, 'buttonbackc').setInteractive();
 
         buttonm.on('pointerdown', function () {
 

@@ -23,10 +23,12 @@ const config = {
     height: DEFAULT_HEIGHT
   },
   scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, InventoryScene],
+  pixelArt: true,
+  roundPixels: true,
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false,
+      Gravity: { x: 0, y: 0 }
     }
   }
 }
