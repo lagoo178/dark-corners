@@ -3,7 +3,7 @@ import PlayerModel from './PlayerModel';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, texture) {
-    super(scene, x * 16, y * 16, texture);
+    super(scene, x, y, texture);
     scene.sys.updateList.add(this);
     scene.sys.displayList.add(this);
     scene.physics.world.enableBody(this);

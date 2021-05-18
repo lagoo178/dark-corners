@@ -1,216 +1,192 @@
-<h1 align="center">
-  <br>
-  <a href="https://github.com/yandeu/phaser-project-template-es6#readme"><img src="readme/header-es6.png" alt="header" width="600"></a>
-  <br>
-  Phaser 3 ES6 Starter Template
-  <br>
-</h1>
+<!--
+*** Thanks for checking out this README Template. If you have a suggestion that would
+*** make this better, please fork the repo and create a pull request or simply open
+*** an issue with the tag "enhancement".
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-<h4 align="center">
-A starter template for <a href="https://phaser.io/" target="_blank" >Phaser 3</a> with <strong>ES6</strong> and <a href="https://webpack.js.org/" target="_blank" >webpack</a> for building excellent html5-games that work great in the browser and on mobile devices.</h4>
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
 
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
+<!-- PROJECT LOGO -->
+
+<br />
 <p align="center">
-  <a href="https://david-dm.org/yandeu/phaser-project-template-es6" title="dependencies status">
-    <img src="https://david-dm.org/yandeu/phaser-project-template-es6/status.svg?style=flat-square"/>
+  <a href="git@github.com:lagoo178/dark-corners.git">
+    <!--<p align="center"> <img src="./assets/sprites/logo.png" alt="ForestRPG" height="200">--> </p>
   </a>
-  <a href="https://opensource.org/licenses/MIT" title="License: MIT" >
-    <img src="https://img.shields.io/badge/License-MIT-greenbright.svg?style=flat-square">
-  </a>
-  <img src="https://img.shields.io/github/package-json/v/yandeu/phaser-project-template-es6.svg?style=flat-square" alt="GitHub package.json version">
-  <img src="https://img.shields.io/github/last-commit/yandeu/phaser-project-template-es6.svg?style=flat-square" alt="GitHub last commit">
-  <a href="https://github.com/prettier/prettier" alt="code style: prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
+
+  <h3 align="center">An Action-Horror Top Down Shooter Game with Roguelike elements developed in JavaScript with Phaser 3 library </h3>
+
+  <p align="center">
+    <a href="https://github.com/lagoo178/dark-corners/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/lagoo178/dark-corners/issues">Request Feature</a>
+  </p>
 </p>
 
-<p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#preview">Preview</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#enable3d">enable3d</a> •
-  <a href="#progressive-web-app-pwa">PWA</a> •
-  <a href="#native-app">Native App</a> •
-  <a href="#custom-configurations">Custom Configurations</a> •
-  <a href="#typescript">TypeScript</a> •
-  <a href="#useful-links">Useful Links</a> •
-  <a href="#multiplayer-game">Multiplayer Game</a> •
-  <a href="#examples">Examples</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#license">License</a>
-</p>
+<!-- TABLE OF CONTENTS -->
 
-<blockquote align="center">
- Want to use TypeScript instead? Switch to the <a href="https://github.com/yandeu/phaser-project-template#readme" >phaser-project-template</a>
-</blockquote>
+## Table of Contents
 
-<br>
-<br>
+- [Potential Future Updates](#potential-future-updates)
+  - [Authors](#authors)
+  - [Show your support](#show-your-support)
+  - [Acknowledgments](#acknowledgments)
+  - [📝 License](#-license)
 
-## \* \* \* \* \* \*
+<!-- ABOUT THE PROJECT -->
 
-# ⚠️ IMPORTANT
+## About The Project
 
-### Please use the [phaser-project-template](https://github.com/yandeu/phaser-project-template#readme) instead!
+In this project, An Action-Horror Top Down Shooter Game with Roguelike elements in JavaScript was built with the help of Phaser library.
 
-### Although it uses TypeScript under the hood, all TypeScript features are disabled by default. This means you can just write JavaScript (ES2015+) as you are used to. Give it a try! 👍
+An external api service is used to store the player names and scores. Top 5 players are displayed in game leaderboard.
 
-## \* \* \* \* \* \*
+<!-- CONTROL'S -->
 
-<br>
-<br>
+## How to play
 
-## Key Features
+The main character needs to kill enemies as quickly as possible to proceed to the next level and get a high score, or die trying and lose all of your progress.
 
-- **ESNext** features ready (async/await, Rest/Spread operators)
-- Code Splitting
-- Obfuscation
-- Development Server with SourceMap and Live-Reload
-- PWA ready with offline support and "Add to Home screen" install prompt
-- Easy to build Native App using Capacitor
-- Includes Phaser 3 TypeScript typings
-- For development and production builds
-- Adds a webpack ContentHash to the JavaScript files (in production)
+### Control's
 
-## Preview
+- (W) key => Move up
+- (A) key => Move left
+- (S) key => Move down
+- (D) key => Move right
+- (Mouse) pointer => Aim
+- (Left Mouse) key  => Shoot gun
+- (I) key => Open Inventory
+- (Middle Mouse) scroll => Navigate Inventory
+- (E) key => Use Item
 
-This is what you get after installing this template. A simple and clean starter template written in ES6+. [Try it!](https://s3.eu-central-1.amazonaws.com/phaser3-typescript/starter-template/index.html)
+<!--<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93250228-ccb63300-f792-11ea-8c15-1abf99f364b7.png" alt="ForestRPG Game" width="700"> </p>-->
 
-<a href="https://s3.eu-central-1.amazonaws.com/phaser3-typescript/starter-template/index.html">
-<img src="readme/screenshot.png" width="640" style='border: 0.25em solid #e1e4e8;border-radius: 20px;'/>
-</a>
+<!-- Live Link  -->
 
-## How To Use
+## Live Link
 
-To clone and run this template, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+[Click here](link)
+
+<!-- INSTALLATION -->
+
+## Installation
+
+To run 'Dark Corners' locally, clone the repository, navigate to it's directory.
+
+#### Follow these commands step by step:-
 
 ```bash
-# Clone this repository
-$ git clone --depth 1 https://github.com/yandeu/phaser-project-template-es6.git phaser3-game
-
-# Go into the repository
-$ cd phaser3-game
-
-# Install dependencies
-$ npm install
-
-# Start the local development server (on port 8080)
-$ npm start
-
-# Ready for production?
-# Build the production ready code to the /dist folder
-$ npm run build
-
-# Play your production ready game in the browser
-$ npm run serve
+git@github.com:lagoo178/dark-corners.git
+cd dark-corners
+npm install
+npm run start
 ```
 
-Change the **gameName** in /webpack/webpack.common.js.
+Now go to [localhost:8080](http://localhost:8080) in your browser.
 
-All your game code lies inside the **/src/scripts** folder. All assets need to be inside the **/src/assets** folder in order to get copied to /dist while creating the production build. Do not change the name of the index.html and game.ts files.
 
-## enable3d
+<!-- BUILD WITH -->
 
-<a href="https://github.com/yandeu/enable3d#readme"><img src="readme/enable3d-logo.png" alt="enable3d logo" width="300"></a>
+## Built With
 
-Want to add 3D objects and physics to your Phaser game? Checkout [enable3d](https://github.com/yandeu/enable3d#readme)!
+- HTML/CSS
+- Phaser 3
+- Webpack
+- Tiled
+- Sublime Text Editor
+- ES6
+- NPM
+- Github
+- Github pages for deployment
+- Leaderboard API service
+- Pathfinding with Dijkstra Algorithm
+- Random Level Generation with Perlin Noise
 
-## Progressive Web App (PWA)
+<!-- Game Design -->
 
-![PWA](readme/pwa.png)
+## Game Design
 
-This template is **100% PWA ready**.
+<!-- This game has 3 main assets that bring it to life:
 
-The ServiceWorker is **disabled by default**. Uncomment the line below inside /src/index.html to enable it.
+1. The hero
 
-```html
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-    })
-  }
-</script>
-```
+<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93326758-9ec80180-f819-11ea-8901-40fe9f66c95e.png" alt="Hero" width="100">
 
-You can easily personalize its settings by following these steps:
+1. The map assets:
 
-- Replace both icons in /pwa/icons with your own.
-  - One is **512x512** the other **192x192**
-- Add your own **favicon.ico** to /src
-- Adjust these parameters in the **manifest.json** file in /pwa
-  - **short_name**: Max. 12 characters
-  - **name**: The full game name
-  - **orientation**: "landscape" or "portrait"
-  - **background_color**: color of the splash screen
-  - **theme_color**: color of the navbar - has to match the theme-color in the index.html file
-- You can leave the **sw.js** (serviceWorker) in /pwa how it is.
-- Change the **gameName** in /webpack/webpack.common.js
+<p align="center"> <img src="./assets/environment/tileset.png" alt="Map" width="300">
 
-Read more about PWA on [developers.google.com](https://developers.google.com/web/progressive-web-apps/)
+3. The Enemies (Moles and Treants):
 
-## Native App
+<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93326875-ccad4600-f819-11ea-920c-793bb9618e98.png" alt="Enemies" width="100">
+<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93326910-ddf65280-f819-11ea-801c-a386ceaec793.png" alt="Enemies" width="100">
 
-The simplest way to build a Native App is using [Capacitor](https://capacitor.ionicframework.com/) and following its [Documentation](https://capacitor.ionicframework.com/docs/).
+-->
 
-The only thing you need to change after installing Capacitor is the **webDir** inside the **capacitor.config.json** file. Set it to **dist** like so:
+<!-- game play -->
 
-```json
-{
-  "appId": "com.example.app",
-  "appName": "YOUR_APP_NAME",
-  "bundledWebRuntime": false,
-  "webDir": "dist"
-}
-```
+## Game Play
 
-## Custom Configurations
 
-### Babel Compiler
 
-Change the Babel compiler's settings in the .babelrc file.
+<!--<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93250526-3c2c2280-f793-11ea-9c66-a053e4e0a1c1.png" alt="ForestRPG Game" width="700"> </p>-->
 
-You'll find more information about the babel [here](https://babeljs.io/).
+# Potential Future Updates
 
-### Webpack
+- Add more weapon variety
+- Add more levels
+- Adding collectable objects like coins and upgrades
+- Touch controls/Mobile Friendly
 
-All webpack configs are in the **webpack** folder.
+<!-- CONTACT -->
 
-#### Obfuscation
+## Authors
 
-We are using the [webpack-obfuscator](https://github.com/javascript-obfuscator/webpack-obfuscator). Change its settings in webpack/webpack.prod.js if needed. All available options are listed [here](https://github.com/javascript-obfuscator/javascript-obfuscator#javascript-obfuscator-options).
+👤 **Sutan Daffa Satria Hertanto**
 
-## TypeScript
+- Github: [@lagoo178](https://github.com/lagoo178)
+- LinkedIn: [sutan-daffa-satria-hertanto](https://linkedin.com/sutan-daffa-satria-hertanto-06207a15b)
+- Email: [lagooo178@gmail.com](mailto:lagooo178@gmail.com)
 
-Want to use TypeScript instead of ES6? Switch to the [phaser-project-template](https://github.com/yandeu/phaser-project-template#readme)
+👤 **Laila Lutfiah**
 
-## Multiplayer Game
+- Github: [@lailalutfiah](https://github.com/lailalutfiah)
+- LinkedIn: [laila-lutfiah](https://linkedin.com/laila-lutfiah-016a751b2)
+- Email: [lailalutfiah77@gmail.com](mailto:lailalutfiah77@gmail.com)
 
-Making a multiplayer game? Check out [geckos.io](https://github.com/geckosio/geckos.io#readme)
+## Show your support
 
-## Useful Links
+Give a ⭐️ if you like this project!
 
-- [Phaser Website](https://phaser.io/)
-- [Phaser 3 Forum](https://phaser.discourse.group/)
-- [Phaser 3 API Docs](https://photonstorm.github.io/phaser3-docs/)
-- [Official Phaser 3 Examples](http://labs.phaser.io/)
-- [Notes of Phaser 3](https://rexrainbow.github.io/phaser3-rex-notes/docs/site/index.html)
+## Acknowledgments
 
-## Examples
+For the amazing pixel art and other assets: [Luis Zuno](https://www.patreon.com/ansimuz)
 
-### Game Examples Built with the TypeScript Starter Template
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-#### Platformer Example [[Play this game](https://s3.eu-central-1.amazonaws.com/phaser3-typescript/platformer-example/index.html) - [Visit its Repository](https://github.com/yandeu/phaser3-typescript-platformer-example#readme)]
+[contributors-shield]: https://img.shields.io/github/contributors/lagoo178/dark-corners.svg?style=flat-square
+[contributors-url]: https://github.com/lagoo178/dark-corners/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/lagoo178/dark-corners.svg?style=flat-square
+[forks-url]: https://github.com/lagoo178/dark-corners/network/members
+[stars-shield]: https://img.shields.io/github/stars/lagoo178/dark-corners.svg?style=flat-square
+[stars-url]: https://github.com/lagoo178/dark-corners/stargazers
+[issues-shield]: https://img.shields.io/github/issues/lagoo178/dark-corners.svg?style=flat-square
+[issues-url]: https://github.com/lagoo178/dark-corners/issues
 
-[![phaser3-typescript-platformer](https://raw.githubusercontent.com/yandeu/phaser3-typescript-platformer-example/master/screenshots/nexus6-640x360.png)](https://github.com/yandeu/phaser3-typescript-platformer-example#readme)
+## 📝 License
 
-#### Phaser 3 + Matter.js: Car Example [[Play this game](https://s3.eu-central-1.amazonaws.com/phaser3-typescript/car-on-curved-tarrain/index.html) - [Visit its Repository](https://github.com/yandeu/phaser3-matter-car-on-curved-terrain#readme)]
-
-<a href="https://github.com/yandeu/phaser3-matter-car-on-curved-terrain#readme">
-<img src="https://raw.githubusercontent.com/yandeu/phaser3-matter-car-on-curved-terrain/master/readme/myimage.gif" width="640" alt="phaser3-matter-car-example">
-</a>
-
-## Credits
-
-A huge thank you to Rich [@photonstorm](https://github.com/photonstorm) for creating Phaser
-
-## License
-
-The MIT License (MIT) 2019 - [Yannick Deubel](https://github.com/yandeu). Please have a look at the [LICENSE](LICENSE) for more details.
+TThe MIT License (MIT) 2021 - [Sutan Daffa Satria Hertanto](https://github.com/lagoo178). Please have a look at the [LICENSE](https://opensource.org/licenses/MIT) for more details.

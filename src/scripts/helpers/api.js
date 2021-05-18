@@ -1,5 +1,5 @@
 const Url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api';
-const gameId = 'WtKT7KZX1bi9BCfM1277';
+const gameId = '2uxnCb3QMbmkeb6NKsmo';
 
 export const getID = async () => {
   const response = await fetch(`${Url}/games/`, {
