@@ -32,16 +32,15 @@ export default class gameScene extends Phaser.Scene {
     }
     preload() {
         // Load in images and sprites
-        //this.load.spritesheet('player_handgun', 'assets/testing-dude(2).png',
-        //    { frameWidth: 66, frameHeight: 60 });
-        //this.load.spritesheet('zombie', 'assets/testing-zombie(3).png',
-        //    { frameWidth: 66, frameHeight: 60 });
         this.load.atlas('player', 'assets/player.png', 'assets/player.json');
-        this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');        
-        //this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');
+        this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');     
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('target', 'assets/crosshair.png');
         this.load.image('lives', 'assets/heart.png');
+        this.load.audio('gun-fire', 'assets/sound/gun-fire.mp3');
+        this.load.audio('player-hit', 'assets/sound/player-hit.mp3');
+        this.load.audio('player-running', 'assets/sound/player-running.mp3');
+        this.load.audio('main-score', 'assets/sound/main-score.mp3');
         //this.load.image('background', 'background.png');
         this.load.image('tiles', 'assets/battle-royale.png');
         this.load.tilemapTiledJSON('map', 'assets/1.json');
@@ -50,6 +49,7 @@ export default class gameScene extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 32 });
     }
     create() {
+        this.soundManager();
         this.createMap();
         this.createPlayer();      
         enemy = this.physics.add.sprite(300, 600, 'zombie'); 
@@ -280,7 +280,7 @@ export default class gameScene extends Phaser.Scene {
         //scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
         const fontConfig = {
           fontFamily: 'monospace',
-          fontSize: 50,
+          fontSize: 38,
           fontStyle: 'bold',
           color: '#FFFFFF',
           align: 'center',
@@ -321,6 +321,12 @@ export default class gameScene extends Phaser.Scene {
 
     InputManager()
     {
+        //if (player.move=true) {
+        //    this.playerRunning.play();
+        //} else {
+        //    return
+        //}
+
         // Creates object for input with WASD kets
         moveKeys = this.input.keyboard.addKeys({
             'up': Phaser.Input.Keyboard.KeyCodes.W,
@@ -329,26 +335,31 @@ export default class gameScene extends Phaser.Scene {
             'right': Phaser.Input.Keyboard.KeyCodes.D
         });
 
+
         // Enables movement of player with WASD keys
         this.input.keyboard.on('keydown-W', function (event) {
             player.setAccelerationY(-800);
             console.log('W key pressed');
             player.play('handgun-move');
+            player.move=true;
         });
         this.input.keyboard.on('keydown-S', function (event) {
             player.setAccelerationY(800);
             console.log('S key pressed');
             player.play('handgun-move');
+            player.move=true;
         });
         this.input.keyboard.on('keydown-A', function (event) {
             player.setAccelerationX(-800);
             console.log('A key pressed');
             player.play('handgun-move');
+            player.move=true;
         });
         this.input.keyboard.on('keydown-D', function (event) {
             player.setAccelerationX(800);
             console.log('D key pressed');
             player.play('handgun-move');
+            player.move=true;
         });
 
         // Stops player acceleration on uppress of WASD keys
@@ -380,6 +391,7 @@ export default class gameScene extends Phaser.Scene {
             if (bullet)
             {
                 bullet.fire(player, reticle);
+                this.gunFire.play();
                 //this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
                // this.physics.add.collider(bullet, this.block);
             }
@@ -431,6 +443,7 @@ export default class gameScene extends Phaser.Scene {
         player.kills = 0;
         player.shots = 0;
         player.scoreCalc = 0;
+        player.move=false;
         //this.player = new Player(this, 800, 300, 'player');
         //this.player.setDisplaySize(60, 60);
         //this.add.existing(this.player);
@@ -538,6 +551,13 @@ export default class gameScene extends Phaser.Scene {
         enemy.play('zombie-idle');
     }
 
+    soundManager() 
+    {   
+        this.gunFire = this.sound.add('gun-fire');
+        this.playerRunning = this.sound.add('player-running');
+        this.playerHit = this.sound.add('player-hit');
+    }
+
     scoreManager(time) 
     {   
         player.scoreCalc = (player.health * 200
@@ -570,7 +590,7 @@ export default class gameScene extends Phaser.Scene {
 
         player.hurtFlag = true;
         this.time.addEvent({
-          delay: 2000,
+          delay: 200,
           callback: this.resetHurtTime,
           callbackScope: this,
         });
@@ -578,7 +598,7 @@ export default class gameScene extends Phaser.Scene {
         player.alpha = 0.5;
         player.health -= 1;
         this.updateHealthDisplay();
-        //play audio here
+        this.playerHit.play();
 
         if (player.health < 1) {
           player.scoreCalc -= 200;
@@ -662,11 +682,6 @@ export default class gameScene extends Phaser.Scene {
             reticle.y = player.y+600;
         else if (distY < -600)
             reticle.y = player.y-600;
-    }
-
-    checkCollision = function(x,y){
-        var tile = this.map.getTileAt(x, y);
-        return tile.properties.collide == true;
     }
 
     getTileID = function(x,y){
