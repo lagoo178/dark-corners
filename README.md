@@ -119,7 +119,7 @@ Now go to [localhost:8080](http://localhost:8080) in your browser.
 
 ## Game Design
 
-This game has 3 main assets that bring it to life:
+<!-- This game has 3 main assets that bring it to life:
 
 1. The hero
 
@@ -133,6 +133,8 @@ This game has 3 main assets that bring it to life:
 
 <p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93326875-ccad4600-f819-11ea-920c-793bb9618e98.png" alt="Enemies" width="100">
 <p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93326910-ddf65280-f819-11ea-801c-a386ceaec793.png" alt="Enemies" width="100">
+
+-->
 
 <!-- game play -->
 
@@ -176,7 +178,7 @@ For the amazing pixel art and other assets: [Luis Zuno](https://www.patreon.com/
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/lagoo178/dark-corners.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/lagoo178/dark-corners.svg?style=flat-square
 [contributors-url]: https://github.com/lagoo178/dark-corners/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/lagoo178/dark-corners.svg?style=flat-square
 [forks-url]: https://github.com/lagoo178/dark-corners/network/members
