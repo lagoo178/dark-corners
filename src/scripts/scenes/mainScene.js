@@ -8,14 +8,14 @@ export default class MainScene extends Phaser.Scene {
     super({ key: 'MainScene' })
   }
   preload() {
-    this.load.image('background', 'assets/menu/bgnew.png');
-    this.load.image('tittle', 'assets/menu/darkcorners1.png');
-    this.load.image('buttonBG', 'assets/menu/button1.png');
-    this.load.image('buttonBH', 'assets/menu/button2.png');
-    this.load.image('buttonBI', 'assets/menu/button3.png');
-    this.load.image('buttonBJ', 'assets/menu/button4.png');
-    this.load.image('buttonBL', 'assets/menu/button5.png');
-    this.load.image('buttonBK', 'assets/menu/buttonon.png');
+    //this.load.image('background', 'assets/menu/bgnew.png');
+    //this.load.image('tittle', 'assets/menu/darkcorners1.png');
+    //this.load.image('buttonBG', 'assets/menu/button1.png');
+    //this.load.image('buttonBH', 'assets/menu/button2.png');
+    //this.load.image('buttonBI', 'assets/menu/button3.png');
+    //this.load.image('buttonBJ', 'assets/menu/button4.png');
+    //this.load.image('buttonBL', 'assets/menu/button5.png');
+    //this.load.image('buttonBK', 'assets/menu/buttonon.png');
   }
   create() {
     var bg = this.add.sprite(0,0,'background');

@@ -6,7 +6,7 @@ export default class statsScene extends Phaser.Scene {
         super({ key: 'StatsScene' })
     }
     preload() {
-        this.load.image('buttonbackb', 'assets/menu/buttonback.png');
+        //this.load.image('buttonbackb', 'assets/menu/buttonback.png');
     }
     create() {
         //emitter = new Phaser.Events.EventEmitter();
