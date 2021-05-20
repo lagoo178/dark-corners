@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import PlayerModel from './PlayerModel';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, texture) {
@@ -9,6 +8,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enableBody(this);
     this.setImmovable(true);
     this.setCollideWorldBounds(true);
-    this.playerModel = new PlayerModel();
+    this.health = 3;
+    this.score = 0;
+    this.hurtFlag = false;
+    this.kills = 0;
+    this.shots = 0;
+    this.scoreCalc = 0;
+    this.move=false;
   }
 }

@@ -418,19 +418,9 @@ export default class gameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        // Set Player Properties
-        player = this.physics.add.sprite(800, 300, 'player');
-        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        player.health = 3;
-        player.score = 0;
-        player.hurtFlag = false;
-        player.kills = 0;
-        player.shots = 0;
-        player.scoreCalc = 0;
-        player.move=false;
-        //this.player = new Player(this, 800, 300, 'player');
-        //this.player.setDisplaySize(60, 60);
-        //this.add.existing(this.player);
+        player = new Player(this, 800, 300, 'player');
+        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
+        this.add.existing(player);
     }
 
     createGroups() {
@@ -446,14 +436,6 @@ export default class gameScene extends Phaser.Scene {
         enemy.health = 3;
         enemiesGroup.add(enemy);
         this.zombieIdle.play();
-        //this.enemy = this.add.group({
-        //    maxSize: 5,
-        //    runChildUpdate: true
-        //});
-        //for (let i = 0; i < 5; i++) {
-        //    this.enemy.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
-        //};
-        //this.enemy.setSize(60, 60);
     } 
 
     createAnims()

@@ -8,8 +8,6 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enableBody(this);
     this.setImmovable(true);
     this.setCollideWorldBounds(true);
-    this.body.bounce.x = 1;
-    this.body.bounce.y = 1;
-    const speed = 240;
+    this.health = 3;
   }
 }
