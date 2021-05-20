@@ -7,6 +7,7 @@ import StatsScene from './scenes/statsScene'
 import HelpScene from './scenes/helpScene'
 import GameScene from './scenes/GameScene'
 import InventoryScene from './scenes/InventoryScene'
+import GameOverScene from './scenes/gameoverScene'
 
 
 const DEFAULT_WIDTH = 1280
@@ -22,7 +23,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, InventoryScene],
+  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, InventoryScene],
   pixelArt: true,
   roundPixels: true,
   physics: {

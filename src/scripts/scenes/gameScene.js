@@ -31,32 +31,7 @@ export default class gameScene extends Phaser.Scene {
         super({ key: 'GameScene' })
         this.inventory = new Inventory();
     }
-    preload() {
-        // Load in images and sprites
 
-        // Sprites
-        //this.load.atlas('player', 'assets/player.png', 'assets/player.json');
-        //this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');     
-        //this.load.image('bullet', 'assets/bullet.png');
-        //this.load.image('target', 'assets/crosshair.png');
-        //this.load.image('lives', 'assets/heart.png');
-
-        // Audio
-        //this.load.audio('gun-fire', 'assets/sound/gun-fire.mp3');
-        //this.load.audio('player-hit', 'assets/sound/player-hit.mp3');
-        //this.load.audio('player-running', 'assets/sound/player-running.mp3');
-        //this.load.audio('zombie-idling', 'assets/sound/zombie-idle.mp3');
-        //this.load.audio('zombie-hit', 'assets/sound/zombie-hit.mp3');
-        //this.load.audio('main-score', 'assets/sound/main-score.mp3');
-        //this.load.image('background', 'background.png');
-
-        // Tiles
-        //this.load.image('tiles', 'assets/battle-royale.png');
-        //this.load.tilemapTiledJSON('map', 'assets/1.json');
-        //this.load.image('item', 'assets/item.png');
-        //this.load.spritesheet('items', 'assets/items.png',
-        //    { frameWidth: 32, frameHeight: 32 });
-    }
     create() {
         this.soundManager();
         this.createMap();
@@ -597,6 +572,10 @@ export default class gameScene extends Phaser.Scene {
     {
         this.initialTime -= 1; // One second
         this.timeDisplay.setText(`TIME:` + this.formatTime(this.initialTime));
+        if (this.initialTime == 0) {
+            this.gameOver();
+        }
+
     }
     hurtPlayer(player) 
     {
@@ -618,7 +597,7 @@ export default class gameScene extends Phaser.Scene {
 
         if (player.health < 1) {
           player.scoreCalc -= 200;
-          //this.gameOver();
+          this.gameOver();
         }
     }
     updateHealthDisplay() 
@@ -768,5 +747,7 @@ export default class gameScene extends Phaser.Scene {
 
     gameOver() {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
+       this.scene.stop();
+       this.scene.stop('InventoryScene');
     }
 }
