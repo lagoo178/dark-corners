@@ -27,8 +27,9 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   addDisplayElements() {
-    this.add.tileSprite(400, 300, 800, 600, 'mainbg');
-    this.add.image(400, 400, 'enter').setScale(3);
+    var bg = this.add.sprite(0,0,'stats-bg');
+    bg.setOrigin(0,0);
+    //this.add.image(400, 400, 'enter').setScale(3);
 
     this.add.text(290, 30,
       'Game Over', {
@@ -68,7 +69,7 @@ export default class GameOverScene extends Phaser.Scene {
       type: 'text',
       name: 'nameField',
       fontSize: '28px',
-      backgroundColor: '#fff',
+      backgroundColor: '#ffffff',
     });
   }
 

@@ -7,7 +7,7 @@ import Pathfinder from '../objects/pathfinding'
 
 var player = null;
 var enemy = null;
-var enemiesGroup;
+var enemyGroup;
 var healthpoints = null;
 var reticle = null;
 var hp1 = null;
@@ -34,11 +34,11 @@ export default class gameScene extends Phaser.Scene {
 
     create() {
         this.soundManager();
+        this.createAnims();
         this.createMap();
         this.createPlayer(); 
         this.createZombies();     
         this.createCrosshair();      
-        this.createAnims();
         this.createGroups();
         this.camera();
         this.InputManager();
@@ -292,10 +292,10 @@ export default class gameScene extends Phaser.Scene {
 
         // Set Collider
         this.physics.add.collider(player, this.block);
-        this.physics.add.collider(enemiesGroup, this.block);
-        this.physics.add.collider(enemiesGroup, enemiesGroup);
-        this.physics.overlap(player, enemiesGroup, this.hurtPlayer, null, this);
-        this.physics.overlap(enemiesGroup, playerBullets, this.shotImpact, null, this);
+        this.physics.add.collider(enemyGroup, this.block);
+        this.physics.add.collider(enemyGroup, enemy);
+        this.physics.overlap(player, enemyGroup, this.hurtPlayer, null, this);
+        this.physics.overlap(enemyGroup, playerBullets, this.shotImpact, null, this);
         this.physics.add.collider(playerBullets, this.block);
         //this.physics.add.collider(playerBullets, this.block);
         //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
@@ -421,6 +421,7 @@ export default class gameScene extends Phaser.Scene {
         player = new Player(this, 800, 300, 'player');
         player.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
         this.add.existing(player);
+        player.play('handgun-idle');
     }
 
     createGroups() {
@@ -430,11 +431,18 @@ export default class gameScene extends Phaser.Scene {
     }
     createZombies() {
 
-        enemiesGroup = this.add.group();
-        enemy = this.physics.add.sprite(300, 600, 'zombie'); 
-        enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
-        enemy.health = 3;
-        enemiesGroup.add(enemy);
+        enemyGroup = this.add.group();
+        //enemy = new Enemy(this, 300, 600, 'zombie');
+        //enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
+        //enemy.add(enemy);
+        for (let i = 0; i < 5; i++) {
+            const enemy = new Zombie(this, 300 + 20 * i, 600, 'zombie');
+            enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
+            enemy.play('zombie-idle');
+            // e.setTint(0x9999ff)
+            enemyGroup.add(enemy);
+        }
+        
         this.zombieIdle.play();
     } 
 
@@ -518,8 +526,8 @@ export default class gameScene extends Phaser.Scene {
             frameRate: 15, 
             repeat: -1 
         });
-        player.play('handgun-idle');
-        enemy.play('zombie-idle');
+       
+        
     }
 
     soundManager() 
@@ -729,7 +737,7 @@ export default class gameScene extends Phaser.Scene {
 
     gameOver() {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
-       this.scene.stop();
+       //this.scene.stop();
        this.scene.stop('InventoryScene');
     }
 }
