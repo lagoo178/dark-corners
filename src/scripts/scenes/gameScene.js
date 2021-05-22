@@ -83,8 +83,6 @@ export default class gameScene extends Phaser.Scene {
 
     createMap() 
     {
-        //Add background player, enemy, reticle, healthpoint sprites
-        //const background = this.add.image(800, 600, 'background');
 
         //buat masukin tilemap yang dibuat dari tilemap editor (tiled)
         
@@ -296,7 +294,7 @@ export default class gameScene extends Phaser.Scene {
         this.physics.add.collider(enemyGroup, enemy);
         this.physics.overlap(player, enemyGroup, this.hurtPlayer, null, this);
         this.physics.overlap(enemyGroup, playerBullets, this.shotImpact, null, this);
-        this.physics.add.collider(playerBullets, this.block);
+        //this.physics.overlap(playerBullets, this.block, this.bulletCollision, null, this);
         //this.physics.add.collider(playerBullets, this.block);
         //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
     }
@@ -436,10 +434,9 @@ export default class gameScene extends Phaser.Scene {
         //enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
         //enemy.add(enemy);
         for (let i = 0; i < 5; i++) {
-            const enemy = new Zombie(this, 300 + 20 * i, 600, 'zombie');
+            enemy = new Zombie(this, 300 + 20 * i, 600, 'zombie');
             enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
             enemy.play('zombie-idle');
-            // e.setTint(0x9999ff)
             enemyGroup.add(enemy);
         }
         
@@ -528,6 +525,10 @@ export default class gameScene extends Phaser.Scene {
         });
        
         
+    }
+
+    bulletCollision(bullet){
+        bullet.destroy();
     }
 
     soundManager() 
