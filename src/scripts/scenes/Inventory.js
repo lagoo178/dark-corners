@@ -9,10 +9,10 @@ export default class Inventory {
 
 		this.items = {
 			//1: {name: "pickaxe", quantity: 1},
-			2: {name: "stone", quantity: 3},
+			1: {name: "pickaxe", quantity: 3},
 			5: {name: "shovel", quantity: 1}
 		}
-		this.addItem({name: "pickaxe", quantity: 3});
+		this.addItem({name: "health_potion", quantity: 3});
 	}
 
 	subscribe(fn){

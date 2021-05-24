@@ -539,7 +539,7 @@ export default class gameScene extends Phaser.Scene {
     scoreManager(time) 
     {   
         player.scoreCalc = (player.health * 200
-          + player.kills * 100);
+          + player.kills * 100 + player.shots *50);
         this.scoreDisplay.setText(`SCORE:${player.scoreCalc}`);
     }
 
@@ -612,6 +612,7 @@ export default class gameScene extends Phaser.Scene {
     shotImpact(enemy, bullet) 
     {
         this.zombieHit.play();
+        player.shots += 1;
         enemy.health = enemy.health - 1;
         console.log("Enemy hp: ", enemy.health);
 

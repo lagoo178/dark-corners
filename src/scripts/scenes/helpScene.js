@@ -7,10 +7,6 @@ export default class helpScene extends Phaser.Scene {
   constructor() {
     super({ key: 'HelpScene' })
   }
-  preload() {
-    //this.load.image('backgroundd', 'assets/menu/help1.png');
-    //this.load.image('buttonbackc', 'assets/menu/buttonback.png');
-  }
   create() {
     //emitter = new Phaser.Events.EventEmitter();
         //controller = new Controller();
