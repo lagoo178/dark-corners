@@ -257,7 +257,6 @@ export default class gameScene extends Phaser.Scene {
         hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
         hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
         hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
-        //scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
         const fontConfig = {
           fontFamily: 'monospace',
           fontSize: 38,
@@ -285,18 +284,14 @@ export default class gameScene extends Phaser.Scene {
 
     interactionManager() 
     {
-        
-        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
-
         // Set Collider
         this.physics.add.collider(player, this.block);
-        this.physics.add.collider(enemyGroup, this.block);
-        this.physics.add.collider(enemyGroup, enemy);
-        this.physics.overlap(player, enemyGroup, this.hurtPlayer, null, this);
-        this.physics.overlap(enemyGroup, playerBullets, this.shotImpact, null, this);
+        this.physics.add.collider(enemy, this.block);
+        this.physics.add.collider(enemy, enemy);
+        this.physics.overlap(player, enemy, this.hurtPlayer, null, this);
+        this.physics.overlap(enemy, playerBullets, this.shotImpact, null, this);
         //this.physics.overlap(playerBullets, this.block, this.bulletCollision, null, this);
         //this.physics.add.collider(playerBullets, this.block);
-        //this.physics.add.collider(player, enemy, playerHitCallback, null, this);
     }
 
 
@@ -425,21 +420,22 @@ export default class gameScene extends Phaser.Scene {
     createGroups() {
         //this.enemiesGroup = this.add.group();
         // Add 2 groups for Bullet objects
-        playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
+        playerBullets = this.physics.add.group({ 
+            classType: Bullet, runChildUpdate: true 
+        });
     }
     createZombies() {
 
-        enemyGroup = this.add.group();
-        //enemy = new Enemy(this, 300, 600, 'zombie');
-        //enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
-        //enemy.add(enemy);
-        for (let i = 0; i < 5; i++) {
-            enemy = new Zombie(this, 300 + 20 * i, 600, 'zombie');
-            enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
-            enemy.play('zombie-idle');
-            enemyGroup.add(enemy);
-        }
-        
+        //enemy = this.add.group({
+        //    classType: Zombie,
+        //    runChildUpdate: true
+        //})
+//
+        //enemy.get(320, 600, 'zombie')
+        //enemy.get(300, 600, 'zombie')
+        //enemyGroup = this.add.group();
+        enemy = new Zombie(this, 300, 600, 'zombie');
+        //enemyGroup.add(enemy);
         this.zombieIdle.play();
     } 
 
@@ -740,5 +736,6 @@ export default class gameScene extends Phaser.Scene {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
        //this.scene.stop();
        this.scene.stop('InventoryScene');
+       this.zombieIdle.stop();
     }
 }

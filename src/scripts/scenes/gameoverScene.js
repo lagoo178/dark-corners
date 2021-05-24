@@ -31,7 +31,7 @@ export default class GameOverScene extends Phaser.Scene {
     bg.setOrigin(0,0);
     //this.add.image(400, 400, 'enter').setScale(3);
 
-    this.add.text(290, 30,
+    this.add.text(500, 30,
       'Game Over', {
         fontFamily: 'monospace',
         fontSize: 40,
@@ -39,7 +39,7 @@ export default class GameOverScene extends Phaser.Scene {
         color: '#ffffff',
         align: 'center',
       });
-    this.add.text(290, 100,
+    this.add.text(510, 100,
       `Your score is: ${this.score}`, {
         fontFamily: 'monospace',
         fontSize: 20,
@@ -47,7 +47,7 @@ export default class GameOverScene extends Phaser.Scene {
         color: '#ffffff',
         align: 'center',
       });
-    this.add.text(150, 200,
+    this.add.text(375, 200,
       'Please enter your name to save your score:', {
         fontFamily: 'monospace',
         fontSize: 20,
@@ -56,7 +56,7 @@ export default class GameOverScene extends Phaser.Scene {
         align: 'center',
       });
 
-    this.add.text(225, 500,
+    this.add.text(440, 500,
       'Press SPACE to skip this step', {
         fontFamily: 'monospace',
         fontSize: 20,
@@ -65,7 +65,7 @@ export default class GameOverScene extends Phaser.Scene {
         align: 'center',
       });
 
-    this.inputText = this.add.dom(400, 300, 'input', {
+    this.inputText = this.add.dom(350, 300, 'input', {
       type: 'text',
       name: 'nameField',
       fontSize: '28px',
