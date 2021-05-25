@@ -8,7 +8,7 @@ import Pathfinder from '../objects/pathfinding'
 var player = null;
 var enemy = null;
 var enemyGroup;
-var healthpoints = null;
+var healthGroup;
 var reticle = null;
 var hp1 = null;
 var hp2 = null;
@@ -37,7 +37,8 @@ export default class gameScene extends Phaser.Scene {
         this.createAnims();
         this.createMap();
         this.createPlayer(); 
-        this.createZombies();     
+        this.createZombies();    
+        //this.createHealtPickup(); 
         this.createCrosshair();      
         this.createGroups();
         this.camera();
@@ -49,7 +50,6 @@ export default class gameScene extends Phaser.Scene {
         // Each 1000 ms call onEvent
         timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
         pathfinder= new Pathfinder(grid, 32, 32); 
-        //console.log(path);
         path = pathfinder.getPath(enemy, player);
         console.log(path);
         this.moveCharacter(path)
@@ -90,9 +90,9 @@ export default class gameScene extends Phaser.Scene {
         // buat masukkin gambar tilesetnya yang dipake di tilemap
         const tileset = this.map.addTilesetImage("battle-royale", "tiles");
         // layer buat floor/lantai, buat player sama zombienya jalan
-        const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
+        const floorLayer = this.map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
         // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
-        this.block = this.map.createStaticLayer("block", tileset, 0, 0);
+        this.block = this.map.createStaticLayer("wall", tileset, 0, 0);
         this.block.setCollisionByExclusion([-1]);
 
         //Set world bounds
@@ -290,6 +290,7 @@ export default class gameScene extends Phaser.Scene {
         this.physics.add.collider(enemy, enemy);
         this.physics.overlap(player, enemy, this.hurtPlayer, null, this);
         this.physics.overlap(enemy, playerBullets, this.shotImpact, null, this);
+        this.physics.overlap(player, healthGroup, this.PickupCollision);
         //this.physics.overlap(playerBullets, this.block, this.bulletCollision, null, this);
         //this.physics.add.collider(playerBullets, this.block);
     }
@@ -417,6 +418,39 @@ export default class gameScene extends Phaser.Scene {
         player.play('handgun-idle');
     }
 
+    createHealtPickup(){
+        //  Create 5 random health pick-ups
+        healthGroup = this.physics.add.staticGroup({
+            key: 'samples',
+            frameQuantity: 5,
+            immovable: true
+        });
+
+        var children = healthGroup.getChildren();
+
+        for (var i = 0; i < children.length; i++)
+        {
+            var x = Phaser.Math.Between(50, 750);
+            var y = Phaser.Math.Between(50, 550);
+
+            children[i].setPosition(x, y);
+        }
+
+        //healthGroup.refresh();
+    }
+
+    PickupCollision(player, health){
+        //  Hide the sprite
+        healthGroup.killAndHide(health);
+
+        //  And disable the body
+        health.body.enable = false;
+
+        //  Add 1 health, it'll never go over maxHealth
+        player.health += 1;
+    }
+    
+
     createGroups() {
         //this.enemiesGroup = this.add.group();
         // Add 2 groups for Bullet objects
@@ -434,7 +468,7 @@ export default class gameScene extends Phaser.Scene {
         //enemy.get(320, 600, 'zombie')
         //enemy.get(300, 600, 'zombie')
         //enemyGroup = this.add.group();
-        enemy = new Zombie(this, 300, 600, 'zombie');
+        enemy = new Zombie(this, 300, 800, 'zombie');
         //enemyGroup.add(enemy);
         this.zombieIdle.play();
     } 
@@ -564,6 +598,50 @@ export default class gameScene extends Phaser.Scene {
         }
 
     }
+
+    createSamples = (sampleObjs) => {
+      const numOfSamples = sampleObjs.length;
+        // Create samples
+        const samples = this.physics.add.staticGroup({
+          key: 'samples',
+          frameQuantity: numOfSamples,
+          immovable: true
+        });
+        // Distribute samples over map
+        samples.getChildren().forEach((sample, i) => {
+          let x = sampleObjs[i].x;
+          let y = sampleObjs[i].y;
+          sample.setScale(0.8);
+          sample.setPosition(x, y);
+        });
+    }
+    sampleCollector = (player, sample, thisScene) => {
+        thisScene.samplesTouched = true
+        const sampleLocations = thisScene.sampleObjs; // aka this.sampleObjs
+
+        // hide sprite, disable body
+        thisScene.samples.killAndHide(sample);
+        sample.body.enable = false;
+
+        // update sample locations - to be put into React component!?
+        const sampleIndex = thisScene.samples.getChildren().indexOf(sample); 
+        const newSampleForPlayer = thisScene.samples.getChildren().splice(sampleIndex, 1)[0]; // grab this object 
+        sampleLocations.splice(sampleIndex, 1);
+
+        // Add the collected item obj to the player inv
+        player.gameData.inventory.push(newSampleForPlayer);
+
+        //emit event to update inventory icon
+        sceneEvents.emit('sample-collected', player.gameData.inventory);
+        //sampleEvent.emit('increment-sample', player.gameData.inventory);
+
+        // cut to BossUnlock Scene when all samples are gathered
+        //if (player.gameData.inventory.length === 36) {
+        //  thisScene.scene.start("BossUnlock", player.gameData);
+        //  thisScene.scene.stop(thisScene.scene.key);
+        //}
+    };
+
     hurtPlayer(player) 
     {
         if (player.hurtFlag) {

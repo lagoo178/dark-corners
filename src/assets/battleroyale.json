@@ -1,0 +1,22 @@
+{ "columns":54,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"",
+         "target":"."
+        }
+    },
+ "image":"battle-royale.png",
+ "imageheight":1280,
+ "imagewidth":1728,
+ "margin":0,
+ "name":"battleroyale",
+ "spacing":0,
+ "tilecount":2160,
+ "tiledversion":"1.4.3",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.4
+}
