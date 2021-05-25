@@ -22,7 +22,8 @@ export default class MainScene extends Phaser.Scene {
   create() {
     var bg = this.add.sprite(0,0,'background');
     bg.setOrigin(0,0);
-    this.mute = this.add.image(40, 40, 'soundoff').setScale(0.1).setAlpha(0);
+    this.mute = this.add.image(40, 40, 'soundoff').setScale(0.8).setAlpha(0);
+    this.play = this.add.image(40, 40, 'soundon').setScale(0.8).setAlpha(0);
     var tittle1 = this.add.image(620,70, 'tittle');
     //var titlemenu = this.add.text(600,130, 'MAIN MENU', {fontFamily:'Anton'}, {fontSize:'1200px'});
     button1 = this.add.image(650,190, 'buttonBG').setInteractive();
@@ -31,6 +32,7 @@ export default class MainScene extends Phaser.Scene {
     button4 = this.add.image(650,400, 'buttonBJ').setInteractive();
     button5 = this.add.image(900,650, 'soundon').setInteractive();
     button6 = this.add.image(650,470, 'buttonBL').setInteractive();
+    this.menuKeys = this.input.keyboard.addKeys('m');
 
 
     button1.on('pointerdown', function () {
@@ -56,16 +58,13 @@ export default class MainScene extends Phaser.Scene {
         this.scene.start('HelpScene')
 
     }, this);
-
-    button5.on('pointerdown', function () {
-        this.game.config.musicStatus = !this.game.config.musicStatus;
-        this.game.config.musicStatus ? this.mute.setAlpha(0) : this.mute.setAlpha(1);
-        this.game.config.musicStatus ? this.soundtrack.play() : this.soundtrack.stop();
-
-    });
   }
 
   update() {
-    
+    if (Phaser.Input.Keyboard.JustDown(this.menuKeys.m)) {
+      this.game.config.musicStatus = !this.game.config.musicStatus;
+      this.game.config.musicStatus ? this.mute.setAlpha(0) : this.mute.setAlpha(1);
+      this.game.config.musicStatus ? this.soundtrack.play() : this.soundtrack.stop();
+    }
   }
 }

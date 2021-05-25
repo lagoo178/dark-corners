@@ -290,7 +290,7 @@ export default class gameScene extends Phaser.Scene {
         this.physics.add.collider(enemy, enemy);
         this.physics.overlap(player, enemy, this.hurtPlayer, null, this);
         this.physics.overlap(enemy, playerBullets, this.shotImpact, null, this);
-        this.physics.overlap(player, healthGroup, this.PickupCollision);
+        //this.physics.overlap(player, healthGroup, this.PickupCollision);
         //this.physics.overlap(playerBullets, this.block, this.bulletCollision, null, this);
         //this.physics.add.collider(playerBullets, this.block);
     }
