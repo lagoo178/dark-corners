@@ -782,7 +782,7 @@ export default class gameScene extends Phaser.Scene {
         this.interactionManager();
 
         // Constrain velocity of player
-        this.constrainVelocity(player, 500);
+        this.constrainVelocity(player, 300);
 
         // Constrain position of constrainReticle
         this.constrainReticle(reticle);
@@ -814,6 +814,7 @@ export default class gameScene extends Phaser.Scene {
     gameOver() {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
        //this.scene.stop();
+       this.scene.stop();
        this.scene.stop('InventoryScene');
        this.zombieIdle.stop();
     }

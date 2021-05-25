@@ -23,6 +23,9 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
+  dom: {
+    createContainer: true,
+  },
   scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, InventoryScene],
   pixelArt: true,
   roundPixels: true,

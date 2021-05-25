@@ -9,6 +9,7 @@ export default class GameOverScene extends Phaser.Scene {
   init(data) {
     this.score = data.score;
   }
+  
 
   create() {
     this.addDisplayElements();
@@ -56,6 +57,15 @@ export default class GameOverScene extends Phaser.Scene {
         align: 'center',
       });
 
+    this.add.text(440, 400,
+      'Press ENTER to save your score', {
+        fontFamily: 'monospace',
+        fontSize: 20,
+        fontStyle: 'bold',
+        color: '#ffffff',
+        align: 'center',
+      });
+
     this.add.text(440, 500,
       'Press SPACE to skip this step', {
         fontFamily: 'monospace',
@@ -65,11 +75,11 @@ export default class GameOverScene extends Phaser.Scene {
         align: 'center',
       });
 
-    this.inputText = this.add.dom(350, 300, 'input', {
+    this.inputText = this.add.dom(600, 300, 'input', {
       type: 'text',
       name: 'nameField',
       fontSize: '28px',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#fff',
     });
   }
 
