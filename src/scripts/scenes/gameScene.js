@@ -52,7 +52,7 @@ export default class gameScene extends Phaser.Scene {
         pathfinder= new Pathfinder(grid, 32, 32); 
         path = pathfinder.getPath(enemy, player);
         console.log(path);
-        this.moveCharacter(path)
+        this.moveCharacter(path);
         // for(var k=0; k<path.length; k++) {
         //     var testEnemy = this.physics.add.sprite(path[k].x, path[k].y, 'zombie');
         //     testEnemy.setDisplaySize(60, 60)
@@ -90,9 +90,9 @@ export default class gameScene extends Phaser.Scene {
         // buat masukkin gambar tilesetnya yang dipake di tilemap
         const tileset = this.map.addTilesetImage("battle-royale", "tiles");
         // layer buat floor/lantai, buat player sama zombienya jalan
-        const floorLayer = this.map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+        const floorLayer = this.map.createStaticLayer("floor", tileset, 0, 0);
         // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
-        this.block = this.map.createStaticLayer("wall", tileset, 0, 0);
+        this.block = this.map.createStaticLayer("block", tileset, 0, 0);
         this.block.setCollisionByExclusion([-1]);
 
         //Set world bounds
@@ -467,7 +467,7 @@ export default class gameScene extends Phaser.Scene {
 //
         //enemy.get(320, 600, 'zombie')
         //enemy.get(300, 600, 'zombie')
-        //enemyGroup = this.add.group();
+        //enemyGroup= = this.add.group();
         enemy = new Zombie(this, 300, 800, 'zombie');
         //enemyGroup.add(enemy);
         this.zombieIdle.play();

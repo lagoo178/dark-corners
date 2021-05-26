@@ -40,8 +40,8 @@ export default class PreloadScene extends Phaser.Scene {
 
     // Tiles
     this.load.image('tiles', 'assets/battle-royale.png');
-    //this.load.tilemapTiledJSON('map', 'assets/1.json');
-    this.load.tilemapTiledJSON('map', 'assets/map.json');
+    this.load.tilemapTiledJSON('map', 'assets/1.json');
+    //this.load.tilemapTiledJSON('map', 'assets/map.json');
     this.load.image('item', 'assets/item.png');
     this.load.spritesheet('items', 'assets/items.png',
         { frameWidth: 32, frameHeight: 32 });
