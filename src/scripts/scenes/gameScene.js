@@ -319,17 +319,6 @@ export default class gameScene extends Phaser.Scene {
         // console.log(enemiesGroup.children.entries[this.zombiePos.length - 1]);
         // debugger;
         this.zombieIdle.play();
-
-        // console.log(enemiesGroup);
-        // this.enemy = this.add.group({
-        //    maxSize: 5,
-        //    runChildUpdate: true
-        // });
-        // for (let i = 0; i < 5; i++) {
-        //    this.enemy.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
-        // };
-        // this.enemy.setSize(60, 60);
-
     } 
 
     createAnims()
