@@ -9,10 +9,10 @@ export default class Inventory {
 
 		this.items = {
 			//1: {name: "pickaxe", quantity: 1},
-			1: {name: "pickaxe", quantity: 3},
+			2: {name: "stone", quantity: 3},
 			5: {name: "shovel", quantity: 1}
 		}
-		this.addItem({name: "health_potion", quantity: 3});
+		this.addItem({name: "pickaxe", quantity: 3});
 	}
 
 	subscribe(fn){
@@ -29,29 +29,20 @@ export default class Inventory {
 	}
 
 	addItem(item){
-			let existingKey = Object.keys(this.items).find(key => this.items[key].name === item.name);
-			if(existingKey){
-				this.items[existingKey].quantity += item.quantity;
-			}else{
-				for (let index = 0; index < this.maxColumns * this.maxRows; index++) {
-				let existingItem = this.items[index];
-					if(!existingItem){
-						this.items[index] =item;
-						break;
-					}
+		let existingKey = Object.keys(this.items).find(key => this.items[key].name === item.name);
+		if(existingKey){
+			this.items[existingKey].quantity += item.quantity;
+		}else{
+			for (let index = 0; index < this.maxColumns * this.maxRows; index++) {
+			let existingItem = this.items[index];
+		if(!existingItem){
+			this.items[index] =item;
+			break;
 				}
-			}
+		}
+	}
 		this.broadcast();
-	}
-
-	removeItem(itemName){
-	    let existingKey = Object.keys(this.items).find(key => this.items[key].name === itemName);
-	    if (existingKey) {
-	      this.items[existingKey].quantity--;
-	      if(this.items[existingKey].quantity <=0) delete this.items[existingKey];
-	    }
-	    this.broadcast();
-	}
+}
 	getItem(index) {
 		return this.items[index];
 	}

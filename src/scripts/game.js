@@ -9,7 +9,6 @@ import GameScene from './scenes/GameScene'
 import InventoryScene from './scenes/InventoryScene'
 import GameOverScene from './scenes/gameoverScene'
 
-
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -42,3 +41,4 @@ game.config.musicStatus = true;
 //  const game = new Phaser.Game(config)
 //  game.config.musicStatus = true;
 //})
+

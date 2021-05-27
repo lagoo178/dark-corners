@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 import Bullet from '../objects/bullets';
 import Player from '../sprite/Player';
 import Zombie from '../sprite/Zombie';
-import Inventory from './Inventory.js';
-import Pathfinder from '../objects/pathfinding';
-import Perlin from '../utils/perlin.js';
+import Inventory from './Inventory.js'
+import Pathfinder from '../objects/pathfinding'
+
 var player = null;
 var enemy = null;
 var enemiesGroup;
@@ -30,11 +30,34 @@ export default class gameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' })
         this.inventory = new Inventory();
-        this.zombiePos = [];
+    }
+    preload() {
+        // Load in images and sprites
+
+        // Sprites
+        this.load.atlas('player', 'assets/player.png', 'assets/player.json');
+        this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');     
+        this.load.image('bullet', 'assets/bullet.png');
+        this.load.image('target', 'assets/crosshair.png');
+        this.load.image('lives', 'assets/heart.png');
+
+        // Audio
+        this.load.audio('gun-fire', 'assets/sound/gun-fire.mp3');
+        this.load.audio('player-hit', 'assets/sound/player-hit.mp3');
+        this.load.audio('player-running', 'assets/sound/player-running.mp3');
+        this.load.audio('zombie-idling', 'assets/sound/zombie-idle.mp3');
+        this.load.audio('zombie-hit', 'assets/sound/zombie-hit.mp3');
+        this.load.audio('main-score', 'assets/sound/main-score.mp3');
+        //this.load.image('background', 'background.png');
+
+        // Tiles
+        this.load.image('tiles', 'assets/battle-royale.png');
+        this.load.tilemapTiledJSON('map', 'assets/1.json');
+        this.load.image('item', 'assets/item.png');
+        this.load.spritesheet('items', 'assets/items.png',
+            { frameWidth: 32, frameHeight: 32 });
     }
     create() {
-        // this.physics.world.setFPS(120);
-        // this.physics.world.forceX = true;
         this.soundManager();
         this.createMap();
         this.createPlayer(); 
@@ -51,8 +74,9 @@ export default class gameScene extends Phaser.Scene {
         // Each 1000 ms call onEvent
         timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
         pathfinder= new Pathfinder(grid, 64, 64); 
+        //console.log(path);
         path = pathfinder.getPath(enemy, player);
-        // console.log(path);
+        console.log(path);
         this.moveCharacter(path)
         // for(var k=0; k<path.length; k++) {
         //     var testEnemy = this.physics.add.sprite(path[k].x, path[k].y, 'zombie');
@@ -60,7 +84,7 @@ export default class gameScene extends Phaser.Scene {
         // }
     }
 
-    moveCharacter(path,item)
+    moveCharacter(path,items)
     {
         // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
         var tweens = [];
@@ -69,15 +93,14 @@ export default class gameScene extends Phaser.Scene {
                 var ex = path[i+1].x;
                 var ey = path[i+1].y;
                 tweens.push({
-                    targets: item,
-                    x: {value: ex, duration: 300},
-                    y: {value: ey, duration: 300}
+                    targets: items,
+                    x: {value: ex, duration: 200},
+                    y: {value: ey, duration: 200}
                 });
             }
             
             this.tweens.timeline({
                 tweens: tweens
-
             });
         //}
         
@@ -89,9 +112,8 @@ export default class gameScene extends Phaser.Scene {
         //const background = this.add.image(800, 600, 'background');
 
         //buat masukin tilemap yang dibuat dari tilemap editor (tiled)
+        
         this.map = this.make.tilemap({ key: 'map' });
-        this.zombiePos = this.map.objects[0].objects;
-        // console.log(this.zombiePos);
         // buat masukkin gambar tilesetnya yang dipake di tilemap
         const tileset = this.map.addTilesetImage("battle-royale", "tiles");
         // layer buat floor/lantai, buat player sama zombienya jalan
@@ -99,12 +121,13 @@ export default class gameScene extends Phaser.Scene {
         // layer buat tembok/ buat si player sama zombienya gabisa jalanin lewat itu
         this.block = this.map.createStaticLayer("block", tileset, 0, 0);
         this.block.setCollisionByExclusion([-1]);
+
         //Set world bounds
         this.physics.world.bounds.width = this.map.widthInPixels;
         this.physics.world.bounds.height = this.map.heightInPixels;
         //this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
 
-        //var path = new Pathfinder(floorLayer, 32, 32);
+        //var path = new Pathfinder(floorLayer, 64, 64);
         
         for(var y = 0; y < this.map.height; y++){
             var col = [];
@@ -115,8 +138,9 @@ export default class gameScene extends Phaser.Scene {
             }
             grid.push(col);            
         }        
-        // console.log(grid);
+        console.log(grid);
 
+        
     }
 
     createHud() 
@@ -125,7 +149,7 @@ export default class gameScene extends Phaser.Scene {
         hp1 = this.add.image(25, 25, 'lives').setScrollFactor(0);
         hp2 = this.add.image(75, 25, 'lives').setScrollFactor(0);
         hp3 = this.add.image(125, 25, 'lives').setScrollFactor(0);
-        //scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+        //scoreText = this.add.text(350, 25, 'score: 0', { fontSize: '64px', fill: '#000' }).setScrollFactor(0);
         const fontConfig = {
           fontFamily: 'monospace',
           fontSize: 38,
@@ -138,7 +162,7 @@ export default class gameScene extends Phaser.Scene {
         this.timeDisplay = this.add.text(500, 8, 'TIME:', fontConfig).setScrollFactor(0);
         this.levelDisplay = this.add.text(750, 8, 'LEVEL:', fontConfig).setScrollFactor(0);
         this.scoreDisplay = this.add.text(200, 8, 'SCORE:', fontConfig).setScrollFactor(0);
-        this.levelDisplay.setText((`LEVEL: ${this.zombiePos.length}`));
+
         // Set hud properties
         hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
         hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
@@ -161,7 +185,6 @@ export default class gameScene extends Phaser.Scene {
         this.physics.add.collider(enemiesGroup, this.block);
         this.physics.add.collider(enemiesGroup, enemiesGroup);
         this.physics.overlap(player, enemiesGroup, this.hurtPlayer, null, this);
-        this.physics.overlap(enemiesGroup,enemiesGroup);
         this.physics.overlap(enemiesGroup, playerBullets, this.shotImpact, null, this);
         this.physics.add.collider(playerBullets, this.block);
         //this.physics.add.collider(playerBullets, this.block);
@@ -286,13 +309,15 @@ export default class gameScene extends Phaser.Scene {
 
     createPlayer() {
         // Set Player Properties
-        player = new Player(this, 768, 320, 'player');
-        //player = this.physics.add.sprite(768, 320, 'player');
-        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
-        this.add.existing(player);
-        player.play('handgun-idle');
-        // player.setBounce(-1);
-        // player.setCollideWorldBounds(true);
+        player = this.physics.add.sprite(800, 300, 'player');
+        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+        player.health = 3;
+        player.score = 0;
+        player.hurtFlag = false;
+        player.kills = 0;
+        player.shots = 0;
+        player.scoreCalc = 0;
+        player.move=false;
         //this.player = new Player(this, 800, 300, 'player');
         //this.player.setDisplaySize(60, 60);
         //this.add.existing(this.player);
@@ -304,32 +329,24 @@ export default class gameScene extends Phaser.Scene {
         playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
     }
     createZombies() {
-        enemiesGroup = this.add.group();
-        for (var i = 0; i < this.zombiePos.length; i ++) {
-            enemy = new Zombie(this, this.zombiePos[i].x, this.zombiePos[i].y, 'zombie');
-            //enemy = this.physics.add.sprite(this.zombiePos[i].x, this.zombiePos[i].y, 'zombie'); 
-            //enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(false);
-            //enemy.health = 3;
-            //enemy.move = false;
-            // enemy.setBounce(-1);
-            // enemy.setCollideWorldBounds(true);
+
+        enemiesGroup = this.add.group({ classType: Zombie, runChildUpdate: true });
+        for (var i = 0; i < 2; i ++) {
+            enemy = this.physics.add.sprite(Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'); 
+            enemy.setOrigin(0.5, 0.5).setDisplaySize(60, 60).setCollideWorldBounds(true);
+            enemy.health = 3;
             enemiesGroup.add(enemy);
         }
-        
-        // console.log(enemiesGroup.children.entries[this.zombiePos.length - 1]);
-        // debugger;
-        this.zombieIdle.play();
 
-        // console.log(enemiesGroup);
-        // this.enemy = this.add.group({
+        this.zombieIdle.play();
+        //this.enemy = this.add.group({
         //    maxSize: 5,
         //    runChildUpdate: true
-        // });
-        // for (let i = 0; i < 5; i++) {
+        //});
+        //for (let i = 0; i < 5; i++) {
         //    this.enemy.add(new Enemy(this, Phaser.Math.Between(0, 800), Phaser.Math.Between(600, 200), 'zombie'), true);
-        // };
-        // this.enemy.setSize(60, 60);
-
+        //};
+        //this.enemy.setSize(60, 60);
     } 
 
     createAnims()
@@ -412,6 +429,8 @@ export default class gameScene extends Phaser.Scene {
             frameRate: 15, 
             repeat: -1 
         });
+        player.play('handgun-idle');
+        enemy.play('zombie-idle');
     }
 
     soundManager() 
@@ -426,7 +445,7 @@ export default class gameScene extends Phaser.Scene {
     scoreManager(time) 
     {   
         player.scoreCalc = (player.health * 200
-          + player.kills * 100 + player.shots *50);
+          + player.kills * 100);
         this.scoreDisplay.setText(`SCORE:${player.scoreCalc}`);
     }
 
@@ -446,9 +465,6 @@ export default class gameScene extends Phaser.Scene {
     {
         this.initialTime -= 1; // One second
         this.timeDisplay.setText(`TIME:` + this.formatTime(this.initialTime));
-        if (this.initialTime == 0) {
-            this.gameOver();
-        }
     }
     hurtPlayer(player) 
     {
@@ -470,7 +486,7 @@ export default class gameScene extends Phaser.Scene {
 
         if (player.health < 1) {
           player.scoreCalc -= 200;
-          this.gameOver();
+          //this.gameOver();
         }
     }
     updateHealthDisplay() 
@@ -498,7 +514,6 @@ export default class gameScene extends Phaser.Scene {
     shotImpact(enemy, bullet) 
     {
         this.zombieHit.play();
-        player.shots += 1;
         enemy.health = enemy.health - 1;
         console.log("Enemy hp: ", enemy.health);
 
@@ -567,6 +582,7 @@ export default class gameScene extends Phaser.Scene {
         player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
         // Rotates enemy to face towards player
+        enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
 
         ////////////pathfinding
         // if(enemy.x > player.x) {
@@ -589,7 +605,7 @@ export default class gameScene extends Phaser.Scene {
         this.interactionManager();
 
         // Constrain velocity of player
-        this.constrainVelocity(player, 800);
+        this.constrainVelocity(player, 1200);
 
         // Constrain position of constrainReticle
         this.constrainReticle(reticle);
@@ -612,20 +628,21 @@ export default class gameScene extends Phaser.Scene {
         //     }
         // }
 
+        // path = pathfinder.getPath(enemy, player);
+        // this.moveCharacter(path)
+
         let enemies = enemiesGroup.children.entries;
         for (let i = 0; i < enemies.length; i ++) {
-            enemy = enemies[i];
-            path = pathfinder.getPath(enemy, player);
-            enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-            this.moveCharacter(path,enemy)
+            path = pathfinder.getPath(enemies[i], player);
+            enemies[i].rotation = Phaser.Math.Angle.Between(enemies[i].x, enemies[i].y, player.x, player.y);
+            // console.log(path);
+            this.moveCharacter(path,enemies[i]);
         }
     }
+
     
+
     gameOver() {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
-       //this.scene.stop();
-       this.scene.stop();
-       this.scene.stop('InventoryScene');
-       this.zombieIdle.stop();
     }
 }
