@@ -173,7 +173,6 @@ Give a ⭐️ if you like this project!
 
 ## Acknowledgments
 
-For the amazing pixel art and other assets: [Luis Zuno](https://www.patreon.com/ansimuz)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
