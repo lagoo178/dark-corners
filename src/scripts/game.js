@@ -8,6 +8,7 @@ import HelpScene from './scenes/helpScene'
 import GameScene from './scenes/GameScene'
 import InventoryScene from './scenes/InventoryScene'
 import GameOverScene from './scenes/gameoverScene'
+import CreditScene from './scenes/CreditScene'
 
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
@@ -25,7 +26,7 @@ const config = {
   dom: {
     createContainer: true,
   },
-  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, InventoryScene],
+  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, InventoryScene, CreditScene],
   pixelArt: true,
   roundPixels: true,
   physics: {

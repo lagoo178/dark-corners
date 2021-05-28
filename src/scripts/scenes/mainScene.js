@@ -50,6 +50,12 @@ export default class MainScene extends Phaser.Scene {
         this.scene.start('HelpScene')
 
     }, this);
+
+    button6.on('pointerdown', function () {
+
+        this.scene.start('CreditScene')
+
+    }, this);
   }
 
   update() {
