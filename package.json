@@ -1,8 +1,8 @@
 {
-  "name": "phaser-project-template-es6",
-  "version": "3.24.1",
-  "description": "Phaser 3 starter template with ES6 and webpack.",
-  "homepage": "https://github.com/yandeu/phaser-project-template-es6#readme",
+  "name": "Dark-Corners",
+  "version": "1.0.0",
+  "description": "An Action-Horror Top Down Shooter Game with Roguelike elements developed in JavaScript.",
+  "homepage": "https://github.com/lagoo178/dark-corners",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack/webpack.dev.js",
@@ -23,8 +23,8 @@
     "starter"
   ],
   "author": {
-    "name": "Yannick Deubel",
-    "url": "https://github.com/yandeu"
+    "name": "Sutan Daffa Satria Hertanto; Laila Lutfiah",
+    "url": "https://github.com/lagoo178"
   },
   "repository": {
     "type": "git",
