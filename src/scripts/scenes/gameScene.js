@@ -386,7 +386,6 @@ export default class gameScene extends Phaser.Scene {
     soundManager() 
     {   
         this.gunFire = this.sound.add('gun-fire');
-        this.playerRunning = this.sound.add('player-running');
         this.playerHit = this.sound.add('player-hit');
         this.zombieIdle = this.sound.add('zombie-idling');
         this.zombieHit = this.sound.add('zombie-hit');

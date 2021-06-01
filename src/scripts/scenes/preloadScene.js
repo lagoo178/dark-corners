@@ -31,7 +31,6 @@ export default class PreloadScene extends Phaser.Scene {
     // Audio
     this.load.audio('gun-fire', 'assets/sound/gun-fire.mp3');
     this.load.audio('player-hit', 'assets/sound/player-hit.mp3');
-    this.load.audio('player-running', 'assets/sound/player-running.mp3');
     this.load.audio('zombie-idling', 'assets/sound/zombie-idle.mp3');
     this.load.audio('zombie-hit', 'assets/sound/zombie-hit.mp3');
     this.load.audio('main-score', 'assets/sound/main-score.mp3');
