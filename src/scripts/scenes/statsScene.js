@@ -5,14 +5,9 @@ export default class statsScene extends Phaser.Scene {
     constructor() {
         super({ key: 'StatsScene' })
     }
-    preload() {
-        //this.load.image('buttonbackb', 'assets/menu/buttonback.png');
-    }
     create() {
         var bg = this.add.sprite(0,0,'stats-bg');
         bg.setOrigin(0,0);
-        //emitter = new Phaser.Events.EventEmitter();
-        //controller = new Controller();
         this.add.text(625, 100, 'LeaderBoard', {
           color: 'white',
           fontSize: '32px ',
@@ -24,7 +19,6 @@ export default class statsScene extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
 
         getScores().then((scores) => {
-          //this.enterDisplay();
           const scoreStyle = {
             color: 'white',
             fontSize: '38px ',
@@ -39,11 +33,7 @@ export default class statsScene extends Phaser.Scene {
                 scoreStyle);
             }
           });
-        });
-
-        //this.endKeys = this.input.keyboard.addKeys('enter');
-
-    
+        });   
         var buttonz = this.add.image(1050,680, 'buttonbackb').setInteractive();
 
         buttonz.on('pointerdown', function () {

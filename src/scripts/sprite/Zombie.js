@@ -12,7 +12,5 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
         this.setDisplaySize(60, 60);
         this.setOrigin(0.5, 0.5);
         this.play('zombie-idle');
-    }
-
-    
+    }  
 }

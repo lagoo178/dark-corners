@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import Bullet from '../objects/bullets';
 import Player from '../sprite/Player';
 import Zombie from '../sprite/Zombie';
-import Inventory from './Inventory.js';
 import Pathfinder from '../objects/pathfinding';
 import Perlin from '../utils/perlin.js';
 var player = null;
@@ -18,7 +17,7 @@ var scoreText;
 var moveKeys = null;
 var playerBullets = null;
 var enemyBullets = null;
-var inventory = null;
+//var inventory = null;
 var timedEvent;
 var grid = [];
 var path; 
@@ -29,7 +28,7 @@ var pathfinder;
 export default class gameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' })
-        this.inventory = new Inventory();
+        //this.inventory = new Inventory();
         this.zombiePos = [];
     }
     create() {
@@ -45,7 +44,7 @@ export default class gameScene extends Phaser.Scene {
         this.camera();
         this.InputManager();
         this.createHud();
-        this.scene.launch('InventoryScene', {gameScene:this});
+        //this.scene.launch('InventoryScene', {gameScene:this});
         this.initialTime = 120;
 
         // Each 1000 ms call onEvent
@@ -171,13 +170,8 @@ export default class gameScene extends Phaser.Scene {
 
     InputManager()
     {
-        //if (player.move=true) {
-        //    this.playerRunning.play();
-        //} else {
-        //    return
-        //}
 
-        // Creates object for input with WASD kets
+        // Creates object for input with WASD keys
         moveKeys = this.input.keyboard.addKeys({
             'up': Phaser.Input.Keyboard.KeyCodes.W,
             'down': Phaser.Input.Keyboard.KeyCodes.S,
@@ -185,31 +179,26 @@ export default class gameScene extends Phaser.Scene {
             'right': Phaser.Input.Keyboard.KeyCodes.D
         });
 
-
         // Enables movement of player with WASD keys
         this.input.keyboard.on('keydown-W', function (event) {
             player.setAccelerationY(-800);
             console.log('W key pressed');
             player.play('handgun-move');
-            player.move=true;
         });
         this.input.keyboard.on('keydown-S', function (event) {
             player.setAccelerationY(800);
             console.log('S key pressed');
             player.play('handgun-move');
-            player.move=true;
         });
         this.input.keyboard.on('keydown-A', function (event) {
             player.setAccelerationX(-800);
             console.log('A key pressed');
             player.play('handgun-move');
-            player.move=true;
         });
         this.input.keyboard.on('keydown-D', function (event) {
             player.setAccelerationX(800);
             console.log('D key pressed');
             player.play('handgun-move');
-            player.move=true;
         });
 
         // Stops player acceleration on uppress of WASD keys
@@ -242,8 +231,6 @@ export default class gameScene extends Phaser.Scene {
             {
                 bullet.fire(player, reticle);
                 this.gunFire.play();
-                //this.physics.add.collider(enemy, bullet, this.enemyHitCallback);
-               // this.physics.add.collider(bullet, this.block);
             }
 
 
@@ -287,15 +274,8 @@ export default class gameScene extends Phaser.Scene {
     createPlayer() {
         // Set Player Properties
         player = new Player(this, 768, 320, 'player');
-        //player = this.physics.add.sprite(768, 320, 'player');
-        player.setOrigin(0.5, 0.5).setDisplaySize(60, 60);
         this.add.existing(player);
         player.play('handgun-idle');
-        // player.setBounce(-1);
-        // player.setCollideWorldBounds(true);
-        //this.player = new Player(this, 800, 300, 'player');
-        //this.player.setDisplaySize(60, 60);
-        //this.add.existing(this.player);
     }
 
     createGroups() {
@@ -614,7 +594,7 @@ export default class gameScene extends Phaser.Scene {
        this.scene.start('GameOverScene', { score: player.scoreCalc });
        //this.scene.stop();
        this.scene.stop();
-       this.scene.stop('InventoryScene');
+       //this.scene.stop('InventoryScene');
        this.zombieIdle.stop();
     }
 }

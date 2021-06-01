@@ -38,8 +38,4 @@ const config = {
 }
 const game = new Phaser.Game(config);
 game.config.musicStatus = true;
-//window.addEventListener('load', () => {
-//  const game = new Phaser.Game(config)
-//  game.config.musicStatus = true;
-//})
 
