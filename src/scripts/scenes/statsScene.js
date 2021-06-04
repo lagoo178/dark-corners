@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { getScores } from '../helpers/api';
+import { getScores } from '../helpers/savescore';
 
 export default class statsScene extends Phaser.Scene {
     constructor() {

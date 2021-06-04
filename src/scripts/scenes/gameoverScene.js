@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { postScore } from '../helpers/api';
+import { postScore } from '../helpers/savescore';
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
