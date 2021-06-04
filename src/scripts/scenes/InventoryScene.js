@@ -1,4 +1,4 @@
-import items from "./Items.js";
+import items from "../sprite/Items.js";
 
 export default class InventoryScene extends Phaser.Scene {
 	constructor(){

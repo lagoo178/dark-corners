@@ -5,6 +5,8 @@ export default class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image('phaser-logo', 'assets/img/phaser-logo.png')
+    this.load.image('logo', 'assets/logo.jpeg');
+
     this.loadBar();
     // Menu
     this.load.image('background', 'assets/menu/bgnew.png');
@@ -20,7 +22,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('buttonbackb', 'assets/menu/buttonback.png');
     this.load.image('backgroundd', 'assets/menu/help1.png');
     this.load.image('buttonbackc', 'assets/menu/buttonback.png');
-
     // Sprites
     this.load.atlas('player', 'assets/player.png', 'assets/player.json');
     this.load.atlas('zombie', 'assets/zombieSS.png', 'assets/zombieSS.json');     
