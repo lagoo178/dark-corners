@@ -68,8 +68,6 @@ The main character needs to kill enemies as quickly as possible to proceed to th
 - (D) key => Move right
 - (Mouse) pointer => Aim
 - (Left Mouse) key  => Shoot gun
-- (I) key => Open Inventory
-- (Middle Mouse) scroll => Navigate Inventory
 - (E) key => Use Item
 
 <!--<p align="center"> <img src="https://user-images.githubusercontent.com/34813339/93250228-ccb63300-f792-11ea-8c15-1abf99f364b7.png" alt="ForestRPG Game" width="700"> </p>-->
@@ -103,11 +101,11 @@ Now go to [localhost:8080](http://localhost:8080) in your browser.
 ## Built With
 
 - HTML/CSS
+- Javascript ES6
 - Phaser 3
 - Webpack
 - Tiled
 - Sublime Text Editor
-- ES6
 - NPM
 - Github
 - Github pages for deployment
