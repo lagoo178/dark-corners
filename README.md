@@ -76,7 +76,7 @@ The main character needs to kill enemies as quickly as possible to proceed to th
 
 ## Live Link
 
-[Click here](link)
+[Click here](https://darkcornersgame.com/)
 
 <!-- INSTALLATION -->
 
