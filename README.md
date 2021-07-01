@@ -170,7 +170,7 @@ Now go to [localhost:8080](http://localhost:8080) in your browser.
 Give a ⭐️ if you like this project!
 
 ## Acknowledgments
-
+Everything we used that are not ours are given credits of their works on Credits menu
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -186,4 +186,4 @@ Give a ⭐️ if you like this project!
 
 ## 📝 License
 
-TThe MIT License (MIT) 2021 - [Sutan Daffa Satria Hertanto](https://github.com/lagoo178). Please have a look at the [LICENSE](https://opensource.org/licenses/MIT) for more details.
+TThe MIT License (MIT) 2021 - [Politeknik Negeri Jakarta](https://www.pnj.ac.id/). Please have a look at the [LICENSE](https://opensource.org/licenses/MIT) for more details.
