@@ -6,7 +6,6 @@ import PreloadScene from './scenes/preloadScene'
 import StatsScene from './scenes/statsScene'
 import HelpScene from './scenes/helpScene'
 import GameScene from './scenes/GameScene'
-import InventoryScene from './scenes/InventoryScene'
 import GameOverScene from './scenes/gameoverScene'
 import CreditScene from './scenes/CreditScene'
 
@@ -26,7 +25,7 @@ const config = {
   dom: {
     createContainer: true,
   },
-  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, InventoryScene, CreditScene],
+  scene: [PreloadScene, MainScene, StatsScene, HelpScene, GameScene, GameOverScene, CreditScene],
   pixelArt: true,
   roundPixels: true,
   physics: {
