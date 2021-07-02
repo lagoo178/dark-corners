@@ -112,7 +112,7 @@ module.exports = (req, res) => {
           coord = 0;
         }
         else if (perlinValue >= 0.25 && perlinValue < 0.5) {
-          coord = 69;
+          coord = 129;
         }
         let Y  = y / 64, X = x / 64;
         if (Y > 51 && Y < 58) coord = 0;
