@@ -69,8 +69,8 @@ export default class gameScene extends Phaser.Scene {
                 var ey = path[i+1].y;
                 tweens.push({
                     targets: item,
-                    x: {value: ex, duration: 300},
-                    y: {value: ey, duration: 300}
+                    x: {value: ex, duration: 500},
+                    y: {value: ey, duration: 500}
                 });
             }
             
