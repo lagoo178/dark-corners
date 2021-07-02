@@ -45,13 +45,13 @@ export default class gameScene extends Phaser.Scene {
         this.InputManager();
         this.createHud();
         //this.scene.launch('InventoryScene', {gameScene:this});
-        this.initialTime = 120;
+        this.initialTime = 90;
 
         // Each 1000 ms call onEvent
         timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
         pathfinder= new Pathfinder(grid, 64, 64); 
         path = pathfinder.getPath(enemy, player);
-        // console.log(path);
+        console.log(path);
         this.moveCharacter(path)
         // for(var k=0; k<path.length; k++) {
         //     var testEnemy = this.physics.add.sprite(path[k].x, path[k].y, 'zombie');
